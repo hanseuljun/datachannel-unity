@@ -96,4 +96,7 @@ public static class DataChannelPlugin
 
     [DllImport(DLL_NAME)]
     public static extern int unity_rtcSendMessage(int id, IntPtr data, int size);
+
+    [DllImport(DLL_NAME)]
+    public static extern void unity_rtcCleanup();
 }

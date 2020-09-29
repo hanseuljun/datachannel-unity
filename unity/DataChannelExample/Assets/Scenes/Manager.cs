@@ -17,11 +17,7 @@ public class Manager : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        Debug.Log("Dispose all");
-        peerConnection.Dispose();
-        peerConnection = null;
-        dataChannel.Dispose();
-        dataChannel = null;
+        DataChannelPlugin.unity_rtcCleanup();
     }
 
     void OnLocalDescription(LocalDescription description)
