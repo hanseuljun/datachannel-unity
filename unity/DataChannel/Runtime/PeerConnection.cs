@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using System.Text;
 using UnityEngine;
 
 namespace Rtc
@@ -39,10 +41,18 @@ namespace Rtc
         {
             string[] iceServers = new string[] { "stun:stun.l.google.com:19302" };
             Id = DataChannelPlugin.unity_rtcCreatePeerConnection(iceServers, iceServers.Length);
-            Debug.Log("unity_rtcSetLocalDescriptionCallback: " + DataChannelPlugin.unity_rtcSetLocalDescriptionCallback(Id, OnLocalDescription));
-            Debug.Log("unity_rtcSetLocalCandidateCallback: " + DataChannelPlugin.unity_rtcSetLocalCandidateCallback(Id, OnLocalCandidate));
-            Debug.Log("unity_rtcSetStateChangeCallback: " + DataChannelPlugin.unity_rtcSetStateChangeCallback(Id, OnStateChange));
-            Debug.Log("unity_rtcSetGatheringStateChangeCallback: " + DataChannelPlugin.unity_rtcSetGatheringStateChangeCallback(Id, OnGatheringStateChange));
+            
+            if (DataChannelPlugin.unity_rtcSetLocalDescriptionCallback(Id, OnLocalDescription) < 0)
+                throw new Exception("Error from unity_rtcSetLocalDescriptionCallback.");
+
+            if (DataChannelPlugin.unity_rtcSetLocalCandidateCallback(Id, OnLocalCandidate) < 0)
+                throw new Exception("Error from unity_rtcSetLocalCandidateCallback.");
+
+            if (DataChannelPlugin.unity_rtcSetStateChangeCallback(Id, OnStateChange) < 0)
+                throw new Exception("Error from unity_rtcSetStateChangeCallback.");
+
+            if (DataChannelPlugin.unity_rtcSetGatheringStateChangeCallback(Id, OnGatheringStateChange) < 0)
+                throw new Exception("Error from unity_rtcSetGatheringStateChangeCallback.");
         }
 
         ~PeerConnection()
@@ -52,23 +62,28 @@ namespace Rtc
 
         public void SetLocalDescription()
         {
-            Debug.Log("unity_rtcSetLocalDescription: " + DataChannelPlugin.unity_rtcSetLocalDescription(Id));
+            if (DataChannelPlugin.unity_rtcSetLocalDescription(Id) < 0)
+                throw new Exception("Error from unity_rtcSetLocalDescription.");
         }
 
         public void SetRemoteDescription(string sdp, string type)
         {
-            Debug.Log("unity_rtcSetRemoteDescription: " + DataChannelPlugin.unity_rtcSetRemoteDescription(Id, sdp, type));
+            if (DataChannelPlugin.unity_rtcSetRemoteDescription(Id, sdp, type) < 0)
+                throw new Exception("Error from unity_rtcSetRemoteDescription.");
         }
 
         public void AddRemoteCandidate(string cand, string mid)
         {
-            Debug.Log("unity_rtcAddRemoteCandidate: " + DataChannelPlugin.unity_rtcAddRemoteCandidate(Id, cand, mid));
+            if (DataChannelPlugin.unity_rtcAddRemoteCandidate(Id, cand, mid) < 0)
+                throw new Exception("Error from unity_rtcAddRemoteCandidate.");
         }
 
         public DataChannel AddDataChannel(string label)
         {
             int dc = DataChannelPlugin.unity_rtcAddDataChannel(Id, label);
-            Debug.Log("unity_rtcAddDataChannel: " + dc);
+            if (dc < 0)
+                throw new Exception("Error from unity_rtcAddDataChannel.");
+
             return new DataChannel(dc);
         }
 

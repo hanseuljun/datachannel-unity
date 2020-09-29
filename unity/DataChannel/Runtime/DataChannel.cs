@@ -13,8 +13,12 @@ namespace Rtc
         public DataChannel(int id)
         {
             Id = id;
-            Debug.Log("unity_rtcSetMessageCallback: " + DataChannelPlugin.unity_rtcSetMessageCallback(Id, OnMessage));
-            Debug.Log("unity_rtcSetMessageCallback: " + DataChannelPlugin.unity_rtcSetOpenCallback(Id, OnOpen));
+
+            if (DataChannelPlugin.unity_rtcSetMessageCallback(Id, OnMessage) < 0)
+                throw new Exception("Error from unity_rtcSetMessageCallback.");
+
+            if (DataChannelPlugin.unity_rtcSetOpenCallback(Id, OnOpen) < 0)
+                throw new Exception("Error from unity_rtcSetOpenCallback.");
         }
 
         ~DataChannel()
