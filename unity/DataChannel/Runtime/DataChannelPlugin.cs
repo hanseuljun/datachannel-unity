@@ -3,8 +3,47 @@ using System.Runtime.InteropServices;
 
 public static class DataChannelPlugin
 {
+    public enum RtcState : int
+    {
+        RTC_NEW = 0,
+        RTC_CONNECTING = 1,
+        RTC_CONNECTED = 2,
+        RTC_DISCONNECTED = 3,
+        RTC_FAILED = 4,
+        RTC_CLOSED = 5
+    }
+
+    public enum RtcGatheringState : int
+    {
+        RTC_GATHERING_NEW = 0,
+        RTC_GATHERING_INPROGRESS = 1,
+        RTC_GATHERING_COMPLETE = 2
+    }
+
+    public enum RtcLogLevel : int
+    {
+        RTC_LOG_NONE = 0,
+        RTC_LOG_FATAL = 1,
+        RTC_LOG_ERROR = 2,
+        RTC_LOG_WARNING = 3,
+        RTC_LOG_INFO = 4,
+        RTC_LOG_DEBUG = 5,
+        RTC_LOG_VERBOSE = 6
+    }
+
+    public delegate void RtcLogCallbackFunc(RtcLogLevel level, string message);
     public delegate void RtcDescriptionCallbackFunc(string sdp, string type, IntPtr ptr);
     public delegate void RtcCandidateCallbackFunc(string cand, string mid, IntPtr ptr);
+    public delegate void RtcStateChangeCallbackFunc(RtcState state, IntPtr ptr);
+    public delegate void RtcGatheringStateCallbackFunc(RtcGatheringState satte, IntPtr ptr);
+    public delegate void RtcDataChannelCallbackFunc(int dc, IntPtr ptr);
+    public delegate void RtcTrackCallbackFunc(int tr, IntPtr ptr);
+    public delegate void RtcOpenCallbackFunc(IntPtr ptr);
+    public delegate void RtcClosedCallbackFunc(IntPtr ptr);
+    public delegate void RtcErrorCallbackFunc(string error, IntPtr ptr);
+    public delegate void RtcMessageCallbackFunc(string meesage, int size, IntPtr ptr);
+    public delegate void RtcBufferedAmountLowCallbackFunc(IntPtr ptr);
+    public delegate void RtcAvailableCallbackFunc(IntPtr ptr);
 
     private const string DLL_NAME = "DataChannelUnity";
 
