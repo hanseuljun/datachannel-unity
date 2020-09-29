@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-public static class Plugin
+public static class DataChannelPlugin
 {
     public delegate void RtcDescriptionCallbackFunc(string sdp, string type, IntPtr ptr);
 

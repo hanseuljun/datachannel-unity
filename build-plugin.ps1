@@ -12,7 +12,7 @@ $buildPath = (Get-Location).path + "\build"
 &$msBuild ("/t:DataChannelUnity", "/p:Configuration=$configuration", "/p:Platform=Win32", "$buildPath\x86\DataChannelUnity.sln")
 &$msBuild ("/t:DataChannelUnity", "/p:Configuration=$configuration", "/p:Platform=x64", "$buildPath\x64\DataChannelUnity.sln")
 
-$packagePath = (Get-Location).path + "\unity\DataChannelUnity"
+$packagePath = (Get-Location).path + "\unity\DataChannel"
 
 $x86Path = "$buildPath\x86\src\$configuration"
 $x64Path = "$buildPath\x64\src\$configuration"
@@ -21,5 +21,8 @@ $editorPath = "$packagePath\Editor\Plugins"
 
 Copy-Item "$x86Path\DataChannelUnity.dll" -Destination $uwpPluginPath
 Copy-Item "$x64Path\DataChannelUnity.dll" -Destination $editorPath
+
+$binPath = (Get-Location).path + "\unity\bin"
+Copy-Item "$binPath\DataChannelUnity.dll.meta" -Destination $uwpPluginPath
 
 Pause
