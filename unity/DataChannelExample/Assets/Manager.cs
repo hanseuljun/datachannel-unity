@@ -3,14 +3,12 @@ using Rtc;
 
 public class Manager : MonoBehaviour
 {
+    private PeerConnection peerConnection;
     void Start()
     {
-        var peerConnection = new PeerConnection();
+        peerConnection = new PeerConnection();
         print("peerConnection ID: " + peerConnection.Id);
-    }
-
-    void Update()
-    {
-        
+        peerConnection.AddDataChannel("example");
+        peerConnection.SetLocalDescription();
     }
 }

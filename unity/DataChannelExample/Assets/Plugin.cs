@@ -1,7 +1,10 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 public static class Plugin
 {
+    public delegate void RtcDescriptionCallbackFunc(string sdp, string type, IntPtr ptr);
+
     private const string DLL_NAME = "DataChannelUnity";
 
     [DllImport(DLL_NAME)]
@@ -9,4 +12,16 @@ public static class Plugin
 
     [DllImport(DLL_NAME)]
     public static extern int unity_rtcDeletePeerConnection(int pc);
+
+    [DllImport(DLL_NAME)]
+    public static extern int unity_rtcSetLocalDescriptionCallback(int pc, RtcDescriptionCallbackFunc cb);
+
+    [DllImport(DLL_NAME)]
+    public static extern int unity_rtcSetLocalDescription(int pc);
+
+    [DllImport(DLL_NAME)]
+    public static extern int unity_rtcAddDataChannel(int pc, string label);
+
+    [DllImport(DLL_NAME)]
+    public static extern int unity_rtcDeleteDataChannel(int dc);
 }

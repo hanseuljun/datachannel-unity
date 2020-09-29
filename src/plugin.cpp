@@ -18,4 +18,24 @@ extern "C"
     {
         return rtcDeletePeerConnection(pc);
     }
+
+    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcSetLocalDescriptionCallback(int pc, rtcDescriptionCallbackFunc cb)
+    {
+        return rtcSetLocalDescriptionCallback(pc, cb);
+    }
+
+    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcSetLocalDescription(int pc)
+    {
+        return rtcSetLocalDescription(pc);
+    }
+
+    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcAddDataChannel(int pc, const char* label)
+    {
+        return rtcAddDataChannel(pc, label);
+    }
+
+    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcDeleteDataChannel(int dc)
+    {
+        return rtcDeleteDataChannel(dc);
+    }
 }
