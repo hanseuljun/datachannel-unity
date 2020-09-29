@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 public static class DataChannelPlugin
 {
     public delegate void RtcDescriptionCallbackFunc(string sdp, string type, IntPtr ptr);
+    public delegate void RtcCandidateCallbackFunc(string cand, string mid, IntPtr ptr);
 
     private const string DLL_NAME = "DataChannelUnity";
 
@@ -15,6 +16,9 @@ public static class DataChannelPlugin
 
     [DllImport(DLL_NAME)]
     public static extern int unity_rtcSetLocalDescriptionCallback(int pc, RtcDescriptionCallbackFunc cb);
+
+    [DllImport(DLL_NAME)]
+    public static extern int unity_rtcSetLocalCandidateCallback(int pc, RtcCandidateCallbackFunc cb);
 
     [DllImport(DLL_NAME)]
     public static extern int unity_rtcSetLocalDescription(int pc);

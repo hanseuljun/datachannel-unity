@@ -24,6 +24,11 @@ extern "C"
         return rtcSetLocalDescriptionCallback(pc, cb);
     }
 
+    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcSetLocalCandidateCallback(int pc, rtcCandidateCallbackFunc cb)
+    {
+        return rtcSetLocalCandidateCallback(pc, cb);
+    }
+
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcSetLocalDescription(int pc)
     {
         return rtcSetLocalDescription(pc);
