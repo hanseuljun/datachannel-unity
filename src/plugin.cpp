@@ -1,4 +1,9 @@
-int test()
+#include "IUnityInterface.h"
+
+extern "C"
 {
-    return 123;
+    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API test()
+    {
+        return 123;
+    }
 }
