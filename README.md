@@ -1,2 +1,3 @@
 # datachannel-unity
-libdatachannel for Unity
+
+Install opennssl:86-windows and openssl:x64-windows using vcpkg.
