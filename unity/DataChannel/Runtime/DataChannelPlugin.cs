@@ -29,21 +29,22 @@ public enum RtcLogLevel : int
     RTC_LOG_VERBOSE = 6
 }
 
+public delegate void RtcLogCallbackFunc(RtcLogLevel level, [MarshalAs(UnmanagedType.LPStr)] string message);
+public delegate void RtcDescriptionCallbackFunc([MarshalAs(UnmanagedType.LPStr)] string sdp, [MarshalAs(UnmanagedType.LPStr)] string type, IntPtr ptr);
+public delegate void RtcCandidateCallbackFunc([MarshalAs(UnmanagedType.LPStr)] string cand, [MarshalAs(UnmanagedType.LPStr)] string mid, IntPtr ptr);
+public delegate void RtcStateChangeCallbackFunc(RtcState state, IntPtr ptr);
+public delegate void RtcGatheringStateCallbackFunc(RtcGatheringState satte, IntPtr ptr);
+public delegate void RtcDataChannelCallbackFunc(int dc, IntPtr ptr);
+public delegate void RtcTrackCallbackFunc(int tr, IntPtr ptr);
+public delegate void RtcOpenCallbackFunc(IntPtr ptr);
+public delegate void RtcClosedCallbackFunc(IntPtr ptr);
+public delegate void RtcErrorCallbackFunc([MarshalAs(UnmanagedType.LPStr)] string error, IntPtr ptr);
+public delegate void RtcMessageCallbackFunc(IntPtr meesage, int size, IntPtr ptr);
+public delegate void RtcBufferedAmountLowCallbackFunc(IntPtr ptr);
+public delegate void RtcAvailableCallbackFunc(IntPtr ptr);
+
 public static class DataChannelPlugin
 {
-    public delegate void RtcLogCallbackFunc(RtcLogLevel level, [MarshalAs(UnmanagedType.LPStr)] string message);
-    public delegate void RtcDescriptionCallbackFunc([MarshalAs(UnmanagedType.LPStr)] string sdp, [MarshalAs(UnmanagedType.LPStr)] string type, IntPtr ptr);
-    public delegate void RtcCandidateCallbackFunc([MarshalAs(UnmanagedType.LPStr)] string cand, [MarshalAs(UnmanagedType.LPStr)] string mid, IntPtr ptr);
-    public delegate void RtcStateChangeCallbackFunc(RtcState state, IntPtr ptr);
-    public delegate void RtcGatheringStateCallbackFunc(RtcGatheringState satte, IntPtr ptr);
-    public delegate void RtcDataChannelCallbackFunc(int dc, IntPtr ptr);
-    public delegate void RtcTrackCallbackFunc(int tr, IntPtr ptr);
-    public delegate void RtcOpenCallbackFunc(IntPtr ptr);
-    public delegate void RtcClosedCallbackFunc(IntPtr ptr);
-    public delegate void RtcErrorCallbackFunc([MarshalAs(UnmanagedType.LPStr)] string error, IntPtr ptr);
-    public delegate void RtcMessageCallbackFunc(IntPtr meesage, int size, IntPtr ptr);
-    public delegate void RtcBufferedAmountLowCallbackFunc(IntPtr ptr);
-    public delegate void RtcAvailableCallbackFunc(IntPtr ptr);
 
     private const string DLL_NAME = "DataChannelUnity";
 
@@ -60,7 +61,7 @@ public static class DataChannelPlugin
 
     [DllImport(DLL_NAME)]
     //public static extern int unity_rtcSetLocalDescriptionCallback(int pc, RtcDescriptionCallbackFunc cb);
-    public static extern int unity_rtcSetLocalDescriptionCallback(int pc, IntPtr cb);
+    public static extern int unity_rtcSetLocalDescriptionCallback(int pc, RtcDescriptionCallbackFunc cb);
 
     [DllImport(DLL_NAME)]
     public static extern int unity_rtcSetLocalCandidateCallback(int pc, RtcCandidateCallbackFunc cb);

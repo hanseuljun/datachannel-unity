@@ -10,14 +10,21 @@ public class Manager : MonoBehaviour
         peerConnection = new PeerConnection();
         print("peerConnection ID: " + peerConnection.Id);
         dataChannel = peerConnection.AddDataChannel("example");
-        peerConnection.SetLocalDescription();
-        peerConnection.LocalDescriptionCreated += OnLocalDescription;
-        peerConnection.LocalCandidateCreated += OnLocalCandidate;
+        peerConnection.LocalDescriptionCreated = OnLocalDescription;
+        peerConnection.LocalCandidateCreated = OnLocalCandidate;
     }
 
     void OnApplicationQuit()
     {
         DataChannelPlugin.unity_rtcCleanup();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            peerConnection.SetLocalDescription();
+        }
     }
 
     void OnLocalDescription(LocalDescription description)

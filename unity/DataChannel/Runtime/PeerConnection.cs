@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using UnityEngine;
 
 namespace Rtc
 {
@@ -29,47 +26,45 @@ namespace Rtc
         }
     }
 
-    public class PeerConnection : IDisposable
+    public class PeerConnection
     {
-        public event Action<LocalDescription> LocalDescriptionCreated;
-        public event Action<LocalCandidate> LocalCandidateCreated;
-        public event Action<RtcState> StateChanged;
-        public event Action<RtcGatheringState> GatheringStateChanged;
+        public Action<LocalDescription> LocalDescriptionCreated { get; set; }
+        public Action<LocalCandidate> LocalCandidateCreated { get; set; }
+        public Action<RtcState> StateChanged { get; set; }
+        public Action<RtcGatheringState> GatheringStateChanged { get; set; }
         public int Id { get; private set; }
-        private bool disposed;
+        // PeerConnection needs to hold these delegates as the native plugin libdatachannel
+        // expects the function pointers from these to live stay alive when calling them as callbacks.
+        private RtcDescriptionCallbackFunc descriptionCallback;
+        private RtcCandidateCallbackFunc candidateCallback;
+        private RtcStateChangeCallbackFunc stateChangeCallback;
+        private RtcGatheringStateCallbackFunc gatheringStateCallback;
 
         public PeerConnection()
         {
             string[] iceServers = new string[] { "stun:stun.l.google.com:19302" };
             Id = DataChannelPlugin.unity_rtcCreatePeerConnection(iceServers, iceServers.Length);
-            disposed = false;
 
-            //if (DataChannelPlugin.unity_rtcSetLocalDescriptionCallback(Id, OnLocalDescription) < 0)
-            if (DataChannelPlugin.unity_rtcSetLocalDescriptionCallback(Id, Marshal.GetFunctionPointerForDelegate<DataChannelPlugin.RtcDescriptionCallbackFunc>(OnLocalDescription)) < 0)
-                    throw new Exception("Error from unity_rtcSetLocalDescriptionCallback.");
+            descriptionCallback = new RtcDescriptionCallbackFunc(OnLocalDescription);
+            if (DataChannelPlugin.unity_rtcSetLocalDescriptionCallback(Id, descriptionCallback) < 0)
+                throw new Exception("Error from unity_rtcSetLocalDescriptionCallback.");
 
-            if (DataChannelPlugin.unity_rtcSetLocalCandidateCallback(Id, OnLocalCandidate) < 0)
+            candidateCallback = new RtcCandidateCallbackFunc(OnLocalCandidate);
+            if (DataChannelPlugin.unity_rtcSetLocalCandidateCallback(Id, candidateCallback) < 0)
                 throw new Exception("Error from unity_rtcSetLocalCandidateCallback.");
 
-            if (DataChannelPlugin.unity_rtcSetStateChangeCallback(Id, OnStateChange) < 0)
+            stateChangeCallback = new RtcStateChangeCallbackFunc(OnStateChange);
+            if (DataChannelPlugin.unity_rtcSetStateChangeCallback(Id, stateChangeCallback) < 0)
                 throw new Exception("Error from unity_rtcSetStateChangeCallback.");
 
-            if (DataChannelPlugin.unity_rtcSetGatheringStateChangeCallback(Id, OnGatheringStateChange) < 0)
+            gatheringStateCallback = new RtcGatheringStateCallbackFunc(OnGatheringStateChange);
+            if (DataChannelPlugin.unity_rtcSetGatheringStateChangeCallback(Id, gatheringStateCallback) < 0)
                 throw new Exception("Error from unity_rtcSetGatheringStateChangeCallback.");
         }
 
         ~PeerConnection()
         {
-            Dispose();
-        }
-
-        public void Dispose()
-        {
-            if (disposed)
-                return;
-
             DataChannelPlugin.unity_rtcDeletePeerConnection(Id);
-            disposed = true;
         }
 
         public void SetLocalDescription()
@@ -101,32 +96,22 @@ namespace Rtc
 
         private void OnLocalDescription(string sdp, string type, IntPtr ptr)
         {
-            Debug.Log("OnLocalDescription");
-            Debug.Log("sdp exists: " + (sdp != null));
-            Debug.Log("type exists: " + (type != null));
-            Debug.Log($"LocalDescription - sdp: {sdp}, type: {type}");
-            var localDescription = new LocalDescription(sdp, type);
-            LocalDescriptionCreated?.Invoke(localDescription);
-            Debug.Log($"OnLocalDescription End");
+            LocalDescriptionCreated?.Invoke(new LocalDescription(sdp, type));
         }
 
         private void OnLocalCandidate(string cand, string mid, IntPtr ptr)
         {
-            Debug.Log($"OnLocalCandidate - cand: {cand}, type: {mid}");
             LocalCandidateCreated?.Invoke(new LocalCandidate(cand, mid));
         }
 
         private void OnStateChange(RtcState state, IntPtr ptr)
         {
-            Debug.Log($"OnStateChange - state: {state}");
             StateChanged?.Invoke(state);
         }
 
         private void OnGatheringStateChange(RtcGatheringState state, IntPtr ptr)
         {
-            Debug.Log($"OnGatheringStateChange - state: {state}");
             GatheringStateChanged?.Invoke(state);
-
         }
 
     }

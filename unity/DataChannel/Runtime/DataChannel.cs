@@ -1,39 +1,34 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using UnityEngine;
 
 namespace Rtc
 {
-    public class DataChannel : IDisposable
+    public class DataChannel
     {
-        public event Action Opened;
-        public event Action<byte[]> MessageReceived;
-        private bool disposed;
+        public Action Opened { get; set; }
+        public Action<byte[]> MessageReceived { get; set; }
 
         public int Id { get; private set; }
+        // DataChannel needs to hold these delegates as the native plugin libdatachannel
+        // expects the function pointers from these to live stay alive when calling them as callbacks.
+        private RtcOpenCallbackFunc openCallback;
+        private RtcMessageCallbackFunc messageCallback;
         public DataChannel(int id)
         {
             Id = id;
 
-            if (DataChannelPlugin.unity_rtcSetMessageCallback(Id, OnMessage) < 0)
-                throw new Exception("Error from unity_rtcSetMessageCallback.");
-
-            if (DataChannelPlugin.unity_rtcSetOpenCallback(Id, OnOpen) < 0)
+            openCallback = new RtcOpenCallbackFunc(OnOpen);
+            if (DataChannelPlugin.unity_rtcSetOpenCallback(Id, openCallback) < 0)
                 throw new Exception("Error from unity_rtcSetOpenCallback.");
+
+            messageCallback = new RtcMessageCallbackFunc(OnMessage);
+            if (DataChannelPlugin.unity_rtcSetMessageCallback(Id, messageCallback) < 0)
+                throw new Exception("Error from unity_rtcSetMessageCallback.");
         }
 
         ~DataChannel()
         {
-            Dispose();
-        }
-
-        public void Dispose()
-        {
-            if (disposed)
-                return;
-
             DataChannelPlugin.unity_rtcDeleteDataChannel(Id);
-            disposed = true;
         }
 
         public void SendMessage(byte[] message)
