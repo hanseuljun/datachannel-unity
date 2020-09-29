@@ -5,5 +5,5 @@ public static class Plugin
     private const string DLL_NAME = "DataChannelUnity";
 
     [DllImport(DLL_NAME)]
-    public static extern int test();
+    public static extern int test(string[] inputs, int input_size);
 }

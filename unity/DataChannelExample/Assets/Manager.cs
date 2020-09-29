@@ -4,7 +4,8 @@ public class Manager : MonoBehaviour
 {
     void Start()
     {
-        print("test: " + Plugin.test());
+        string[] input = new string[] { "testing", "a" , "bcd"};
+        print("test: " + Plugin.test(input, input.Length));
     }
 
     void Update()
