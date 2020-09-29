@@ -1,12 +1,12 @@
-add_library(DataChannelUnityPlugin SHARED
+add_library(DataChannelUnity SHARED
   plugin.cpp
 )
-target_include_directories(DataChannelUnityPlugin PRIVATE
+target_include_directories(DataChannelUnity PRIVATE
   ${LIBDATACHANNEL_INCLUDE_DIR}
 )
-target_link_libraries(DataChannelUnityPlugin PRIVATE
+target_link_libraries(DataChannelUnity PRIVATE
   datachannel-static
 )
-set_target_properties(DataChannelUnityPlugin PROPERTIES
+set_target_properties(DataChannelUnity PROPERTIES
   CXX_STANDARD 17
 )
