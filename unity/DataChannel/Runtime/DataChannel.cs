@@ -4,10 +4,11 @@ using UnityEngine;
 
 namespace Rtc
 {
-    public class DataChannel
+    public class DataChannel : IDisposable
     {
         public event Action Opened;
         public event Action<byte[]> MessageReceived;
+        private bool disposed;
 
         public int Id { get; private set; }
         public DataChannel(int id)
@@ -23,7 +24,16 @@ namespace Rtc
 
         ~DataChannel()
         {
-            Debug.Log("unity_rtcDeleteDataChannel: " + DataChannelPlugin.unity_rtcDeleteDataChannel(Id));
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (disposed)
+                return;
+
+            DataChannelPlugin.unity_rtcDeleteDataChannel(Id);
+            disposed = true;
         }
 
         public void SendMessage(byte[] message)
@@ -43,7 +53,7 @@ namespace Rtc
         {
             byte[] managedMessage = new byte[size];
             Marshal.Copy(meesage, managedMessage, 0, size);
-            MessageReceived(managedMessage);
+            MessageReceived?.Invoke(managedMessage);
         }
     }
 }

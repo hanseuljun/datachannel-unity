@@ -31,7 +31,6 @@ public enum RtcLogLevel : int
 
 public static class DataChannelPlugin
 {
-
     public delegate void RtcLogCallbackFunc(RtcLogLevel level, [MarshalAs(UnmanagedType.LPStr)] string message);
     public delegate void RtcDescriptionCallbackFunc([MarshalAs(UnmanagedType.LPStr)] string sdp, [MarshalAs(UnmanagedType.LPStr)] string type, IntPtr ptr);
     public delegate void RtcCandidateCallbackFunc([MarshalAs(UnmanagedType.LPStr)] string cand, [MarshalAs(UnmanagedType.LPStr)] string mid, IntPtr ptr);
@@ -60,7 +59,8 @@ public static class DataChannelPlugin
     public static extern int unity_rtcDeletePeerConnection(int pc);
 
     [DllImport(DLL_NAME)]
-    public static extern int unity_rtcSetLocalDescriptionCallback(int pc, RtcDescriptionCallbackFunc cb);
+    //public static extern int unity_rtcSetLocalDescriptionCallback(int pc, RtcDescriptionCallbackFunc cb);
+    public static extern int unity_rtcSetLocalDescriptionCallback(int pc, IntPtr cb);
 
     [DllImport(DLL_NAME)]
     public static extern int unity_rtcSetLocalCandidateCallback(int pc, RtcCandidateCallbackFunc cb);
