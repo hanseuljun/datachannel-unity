@@ -1,15 +1,27 @@
-﻿using System;
+﻿using AOT;
+using System;
 using System.Runtime.InteropServices;
 
 namespace Rtc
 {
     public static class DataChannelPluginUtils
     {
+        public static void InitLogger(RtcLogLevel level)
+        {
+            DataChannelPlugin.unity_rtcInitLogger(level, OnLog);
+        }
+
         public static void Cleanup()
         {
             PeerConnectionCallbackBridge.Cleanup();
             DataChannelCallbackBridge.Cleanup();
             DataChannelPlugin.unity_rtcCleanup();
+        }
+
+        [MonoPInvokeCallback(typeof(RtcLogCallbackFunc))]
+        public static void OnLog(RtcLogLevel level, string message)
+        {
+            UnityEngine.Debug.Log($"[{level}] {message}");
         }
     }
 
@@ -44,21 +56,25 @@ namespace Rtc
             instance1 = null;
         }
 
+        [MonoPInvokeCallback(typeof(RtcDescriptionCallbackFunc))]
         public static void OnLocalDescription1(string sdp, string type, IntPtr ptr)
         {
             instance1.OnLocalDescription(sdp, type, ptr);
         }
 
+        [MonoPInvokeCallback(typeof(RtcCandidateCallbackFunc))]
         public static void OnLocalCandidate1(string cand, string mid, IntPtr ptr)
         {
             instance1.OnLocalCandidate(cand, mid, ptr);
         }
 
+        [MonoPInvokeCallback(typeof(RtcStateChangeCallbackFunc))]
         public static void OnStateChange1(RtcState state, IntPtr ptr)
         {
             instance1.OnStateChange(state, ptr);
         }
 
+        [MonoPInvokeCallback(typeof(RtcGatheringStateCallbackFunc))]
         public static void OnGatheringStateChange1(RtcGatheringState state, IntPtr ptr)
         {
             instance1.OnGatheringStateChange(state, ptr);
@@ -96,21 +112,25 @@ namespace Rtc
             instance1 = null;
         }
 
+        [MonoPInvokeCallback(typeof(RtcOpenCallbackFunc))]
         public static void OnOpen1(IntPtr ptr)
         {
             instance1.OnOpen(ptr);
         }
 
+        [MonoPInvokeCallback(typeof(RtcClosedCallbackFunc))]
         public static void OnClosed1(IntPtr ptr)
         {
             instance1.OnClosed(ptr);
         }
 
+        [MonoPInvokeCallback(typeof(RtcErrorCallbackFunc))]
         public static void OnError1(string error, IntPtr ptr)
         {
             instance1.OnError(error, ptr);
         }
 
+        [MonoPInvokeCallback(typeof(RtcMessageCallbackFunc))]
         public static void OnMessage1(IntPtr meesage, int size, IntPtr ptr)
         {
             instance1.OnMessage(meesage, size, ptr);
