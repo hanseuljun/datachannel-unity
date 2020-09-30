@@ -25,6 +25,8 @@ extern "C"
         rtcConfiguration config;
         config.iceServers = ice_servers;
         config.iceServersCount = ice_servers_count;
+        config.portRangeBegin = 0;
+        config.portRangeEnd = 0;
 
         return rtcCreatePeerConnection(&config);
     }
