@@ -93,6 +93,12 @@ public static class DataChannelPlugin
     public static extern int unity_rtcSetOpenCallback(int id, RtcOpenCallbackFunc cb);
 
     [DllImport(DLL_NAME)]
+    public static extern int unity_rtcSetClosedCallback(int id, RtcClosedCallbackFunc cb);
+
+    [DllImport(DLL_NAME)]
+    public static extern int unity_rtcSetErrorCallback(int id, RtcErrorCallbackFunc cb);
+
+    [DllImport(DLL_NAME)]
     public static extern int unity_rtcSetMessageCallback(int id, RtcMessageCallbackFunc cb);
 
     [DllImport(DLL_NAME)]
