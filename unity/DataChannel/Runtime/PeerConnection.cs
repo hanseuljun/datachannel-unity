@@ -1,25 +1,26 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Rtc
 {
-    public class LocalDescription
+    public class Description
     {
         public string sdp;
         public string type;
 
-        public LocalDescription(string sdp, string type)
+        public Description(string sdp, string type)
         {
             this.sdp = sdp;
             this.type = type;
         }
     }
 
-    public class LocalCandidate
+    public class Candidate
     {
         public string cand;
         public string mid;
 
-        public LocalCandidate(string cand, string mid)
+        public Candidate(string cand, string mid)
         {
             this.cand = cand;
             this.mid = mid;
@@ -28,8 +29,8 @@ namespace Rtc
 
     public class PeerConnection
     {
-        public Action<LocalDescription> LocalDescriptionCreated { get; set; }
-        public Action<LocalCandidate> LocalCandidateCreated { get; set; }
+        public Action<Description> LocalDescriptionCreated { get; set; }
+        public Action<Candidate> LocalCandidateCreated { get; set; }
         public Action<RtcState> StateChanged { get; set; }
         public Action<RtcGatheringState> GatheringStateChanged { get; set; }
         public int Id { get; private set; }
@@ -96,12 +97,13 @@ namespace Rtc
 
         private void OnLocalDescription(string sdp, string type, IntPtr ptr)
         {
-            LocalDescriptionCreated?.Invoke(new LocalDescription(sdp, type));
+            Debug.Log($"Local Desciprtion: {sdp}");
+            LocalDescriptionCreated?.Invoke(new Description(sdp, type));
         }
 
         private void OnLocalCandidate(string cand, string mid, IntPtr ptr)
         {
-            LocalCandidateCreated?.Invoke(new LocalCandidate(cand, mid));
+            LocalCandidateCreated?.Invoke(new Candidate(cand, mid));
         }
 
         private void OnStateChange(RtcState state, IntPtr ptr)
