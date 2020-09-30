@@ -76,7 +76,6 @@ namespace Rtc
 
         public void OnLocalDescription(string sdp, string type, IntPtr ptr)
         {
-            Debug.Log($"Local Desciprtion: {sdp}");
             LocalDescriptionCreated?.Invoke(new Description(sdp, type));
         }
 

@@ -6,13 +6,16 @@ namespace Rtc
 {
     public static class DataChannelPluginUtils
     {
+        public static RtcLogCallbackFunc logCallback;
         public static void InitLogger(RtcLogLevel level)
         {
-            DataChannelPlugin.unity_rtcInitLogger(level, OnLog);
+            logCallback = new RtcLogCallbackFunc(OnLog);
+            DataChannelPlugin.unity_rtcInitLogger(level, logCallback);
         }
 
         public static void Cleanup()
         {
+            logCallback = null;
             PeerConnectionCallbackBridge.Cleanup();
             DataChannelCallbackBridge.Cleanup();
             DataChannelPlugin.unity_rtcCleanup();
@@ -30,6 +33,10 @@ namespace Rtc
     public static class PeerConnectionCallbackBridge
     {
         public static PeerConnection instance1;
+        public static RtcDescriptionCallbackFunc localDescriptionCallback1;
+        public static RtcCandidateCallbackFunc localCandidateCallback1;
+        public static RtcStateChangeCallbackFunc stateChangeCallback1;
+        public static RtcGatheringStateCallbackFunc gatheringStateCallback1;
 
         public static void SetInstance1(PeerConnection instance)
         {
@@ -38,22 +45,30 @@ namespace Rtc
 
             instance1 = instance;
 
-            if (DataChannelPlugin.unity_rtcSetLocalDescriptionCallback(instance1.Id, OnLocalDescription1) < 0)
+            localDescriptionCallback1 = new RtcDescriptionCallbackFunc(OnLocalDescription1);
+            if (DataChannelPlugin.unity_rtcSetLocalDescriptionCallback(instance1.Id, localDescriptionCallback1) < 0)
                 throw new Exception("Error from unity_rtcSetLocalDescriptionCallback.");
 
-            if (DataChannelPlugin.unity_rtcSetLocalCandidateCallback(instance1.Id, OnLocalCandidate1) < 0)
+            localCandidateCallback1 = new RtcCandidateCallbackFunc(OnLocalCandidate1);
+            if (DataChannelPlugin.unity_rtcSetLocalCandidateCallback(instance1.Id, localCandidateCallback1) < 0)
                 throw new Exception("Error from unity_rtcSetLocalCandidateCallback.");
 
-            if (DataChannelPlugin.unity_rtcSetStateChangeCallback(instance1.Id, OnStateChange1) < 0)
+            stateChangeCallback1 = new RtcStateChangeCallbackFunc(OnStateChange1);
+            if (DataChannelPlugin.unity_rtcSetStateChangeCallback(instance1.Id, stateChangeCallback1) < 0)
                 throw new Exception("Error from unity_rtcSetStateChangeCallback.");
 
-            if (DataChannelPlugin.unity_rtcSetGatheringStateChangeCallback(instance1.Id, OnGatheringStateChange1) < 0)
+            gatheringStateCallback1 = new RtcGatheringStateCallbackFunc(OnGatheringStateChange1);
+            if (DataChannelPlugin.unity_rtcSetGatheringStateChangeCallback(instance1.Id, gatheringStateCallback1) < 0)
                 throw new Exception("Error from unity_rtcSetGatheringStateChangeCallback.");
         }
 
         public static void Cleanup()
         {
             instance1 = null;
+            localDescriptionCallback1 = null;
+            localCandidateCallback1 = null;
+            stateChangeCallback1 = null;
+            gatheringStateCallback1 = null;
         }
 
         [MonoPInvokeCallback(typeof(RtcDescriptionCallbackFunc))]
@@ -86,6 +101,10 @@ namespace Rtc
     public static class DataChannelCallbackBridge
     {
         private static DataChannel instance1;
+        public static RtcOpenCallbackFunc openCallback1;
+        public static RtcClosedCallbackFunc closedCallback1;
+        public static RtcErrorCallbackFunc errorCallback1;
+        public static RtcMessageCallbackFunc messageCallback1;
 
         public static void SetInstance1(DataChannel instance)
         {
@@ -94,22 +113,30 @@ namespace Rtc
 
             instance1 = instance;
 
-            if (DataChannelPlugin.unity_rtcSetOpenCallback(instance.Id, OnOpen1) < 0)
+            openCallback1 = new RtcOpenCallbackFunc(OnOpen1);
+            if (DataChannelPlugin.unity_rtcSetOpenCallback(instance.Id, openCallback1) < 0)
                 throw new Exception("Error from unity_rtcSetOpenCallback.");
 
-            if (DataChannelPlugin.unity_rtcSetClosedCallback(instance.Id, OnClosed1) < 0)
+            closedCallback1 = new RtcClosedCallbackFunc(OnClosed1);
+            if (DataChannelPlugin.unity_rtcSetClosedCallback(instance.Id, closedCallback1) < 0)
                 throw new Exception("Error from unity_rtcSetClosedCallback.");
 
-            if (DataChannelPlugin.unity_rtcSetErrorCallback(instance.Id, OnError1) < 0)
+            errorCallback1 = new RtcErrorCallbackFunc(OnError1);
+            if (DataChannelPlugin.unity_rtcSetErrorCallback(instance.Id, errorCallback1) < 0)
                 throw new Exception("Error from unity_rtcSetErrorCallback.");
 
-            if (DataChannelPlugin.unity_rtcSetMessageCallback(instance.Id, OnMessage1) < 0)
+            messageCallback1 = new RtcMessageCallbackFunc(OnMessage1);
+            if (DataChannelPlugin.unity_rtcSetMessageCallback(instance.Id, messageCallback1) < 0)
                 throw new Exception("Error from unity_rtcSetMessageCallback.");
         }
 
         public static void Cleanup()
         {
             instance1 = null;
+            openCallback1 = null;
+            closedCallback1 = null;
+            errorCallback1 = null;
+            messageCallback1 = null;
         }
 
         [MonoPInvokeCallback(typeof(RtcOpenCallbackFunc))]
