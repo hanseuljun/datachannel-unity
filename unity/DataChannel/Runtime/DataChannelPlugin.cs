@@ -1,6 +1,123 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
+namespace Rtc
+{
+    public static class DataChannelPluginUtils
+    {
+        public static void Cleanup()
+        {
+            PeerConnectionCallbackBridge.Cleanup();
+            DataChannelCallbackBridge.Cleanup();
+            DataChannelPlugin.unity_rtcCleanup();
+        }
+    }
+
+    // A static class to detour Unity not supporting providing instance methods as callbacks to native code.
+    // NotSupportedException: IL2CPP does not support marshaling delegates that point to instance methods to native code.
+    public static class PeerConnectionCallbackBridge
+    {
+        public static PeerConnection instance1;
+
+        public static void SetInstance1(PeerConnection instance)
+        {
+            if (instance1 != null)
+                throw new Exception("There is already instance1 in PeerConnectionCallbackBridge.");
+
+            instance1 = instance;
+
+            if (DataChannelPlugin.unity_rtcSetLocalDescriptionCallback(instance1.Id, OnLocalDescription1) < 0)
+                throw new Exception("Error from unity_rtcSetLocalDescriptionCallback.");
+
+            if (DataChannelPlugin.unity_rtcSetLocalCandidateCallback(instance1.Id, OnLocalCandidate1) < 0)
+                throw new Exception("Error from unity_rtcSetLocalCandidateCallback.");
+
+            if (DataChannelPlugin.unity_rtcSetStateChangeCallback(instance1.Id, OnStateChange1) < 0)
+                throw new Exception("Error from unity_rtcSetStateChangeCallback.");
+
+            if (DataChannelPlugin.unity_rtcSetGatheringStateChangeCallback(instance1.Id, OnGatheringStateChange1) < 0)
+                throw new Exception("Error from unity_rtcSetGatheringStateChangeCallback.");
+        }
+
+        public static void Cleanup()
+        {
+            instance1 = null;
+        }
+
+        public static void OnLocalDescription1(string sdp, string type, IntPtr ptr)
+        {
+            instance1.OnLocalDescription(sdp, type, ptr);
+        }
+
+        public static void OnLocalCandidate1(string cand, string mid, IntPtr ptr)
+        {
+            instance1.OnLocalCandidate(cand, mid, ptr);
+        }
+
+        public static void OnStateChange1(RtcState state, IntPtr ptr)
+        {
+            instance1.OnStateChange(state, ptr);
+        }
+
+        public static void OnGatheringStateChange1(RtcGatheringState state, IntPtr ptr)
+        {
+            instance1.OnGatheringStateChange(state, ptr);
+        }
+    }
+
+    // A static class to detour Unity not supporting providing instance methods as callbacks to native code.
+    // NotSupportedException: IL2CPP does not support marshaling delegates that point to instance methods to native code.
+    public static class DataChannelCallbackBridge
+    {
+        private static DataChannel instance1;
+
+        public static void SetInstance1(DataChannel instance)
+        {
+            if (instance1 != null)
+                throw new Exception("There is already instance1 in DataChannelCallbackBridge.");
+
+            instance1 = instance;
+
+            if (DataChannelPlugin.unity_rtcSetOpenCallback(instance.Id, OnOpen1) < 0)
+                throw new Exception("Error from unity_rtcSetOpenCallback.");
+
+            if (DataChannelPlugin.unity_rtcSetClosedCallback(instance.Id, OnClosed1) < 0)
+                throw new Exception("Error from unity_rtcSetClosedCallback.");
+
+            if (DataChannelPlugin.unity_rtcSetErrorCallback(instance.Id, OnError1) < 0)
+                throw new Exception("Error from unity_rtcSetErrorCallback.");
+
+            if (DataChannelPlugin.unity_rtcSetMessageCallback(instance.Id, OnMessage1) < 0)
+                throw new Exception("Error from unity_rtcSetMessageCallback.");
+        }
+
+        public static void Cleanup()
+        {
+            instance1 = null;
+        }
+
+        public static void OnOpen1(IntPtr ptr)
+        {
+            instance1.OnOpen(ptr);
+        }
+
+        public static void OnClosed1(IntPtr ptr)
+        {
+            instance1.OnClosed(ptr);
+        }
+
+        public static void OnError1(string error, IntPtr ptr)
+        {
+            instance1.OnError(error, ptr);
+        }
+
+        public static void OnMessage1(IntPtr meesage, int size, IntPtr ptr)
+        {
+            instance1.OnMessage(meesage, size, ptr);
+        }
+    }
+}
+
 public enum RtcState : int
 {
     RTC_NEW = 0,
@@ -45,13 +162,11 @@ public delegate void RtcAvailableCallbackFunc(IntPtr ptr);
 
 public static class DataChannelPlugin
 {
-
     private const string DLL_NAME = "DataChannelUnity";
 
     // Log
     [DllImport(DLL_NAME)]
     public static extern void unity_rtcInitLogger(RtcLogLevel level, RtcLogCallbackFunc cb);
-
     // PeerConnection
     [DllImport(DLL_NAME)]
     public static extern int unity_rtcCreatePeerConnection(string[] ice_servers, int ice_servers_count);

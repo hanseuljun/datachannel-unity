@@ -34,33 +34,12 @@ namespace Rtc
         public Action<RtcState> StateChanged { get; set; }
         public Action<RtcGatheringState> GatheringStateChanged { get; set; }
         public int Id { get; private set; }
-        // PeerConnection needs to hold these delegates as the native plugin libdatachannel
-        // expects the function pointers from these to live stay alive when calling them as callbacks.
-        private RtcDescriptionCallbackFunc descriptionCallback;
-        private RtcCandidateCallbackFunc candidateCallback;
-        private RtcStateChangeCallbackFunc stateChangeCallback;
-        private RtcGatheringStateCallbackFunc gatheringStateCallback;
 
         public PeerConnection()
         {
             string[] iceServers = new string[] { "stun:stun.l.google.com:19302" };
             Id = DataChannelPlugin.unity_rtcCreatePeerConnection(iceServers, iceServers.Length);
-
-            descriptionCallback = new RtcDescriptionCallbackFunc(OnLocalDescription);
-            if (DataChannelPlugin.unity_rtcSetLocalDescriptionCallback(Id, descriptionCallback) < 0)
-                throw new Exception("Error from unity_rtcSetLocalDescriptionCallback.");
-
-            candidateCallback = new RtcCandidateCallbackFunc(OnLocalCandidate);
-            if (DataChannelPlugin.unity_rtcSetLocalCandidateCallback(Id, candidateCallback) < 0)
-                throw new Exception("Error from unity_rtcSetLocalCandidateCallback.");
-
-            stateChangeCallback = new RtcStateChangeCallbackFunc(OnStateChange);
-            if (DataChannelPlugin.unity_rtcSetStateChangeCallback(Id, stateChangeCallback) < 0)
-                throw new Exception("Error from unity_rtcSetStateChangeCallback.");
-
-            gatheringStateCallback = new RtcGatheringStateCallbackFunc(OnGatheringStateChange);
-            if (DataChannelPlugin.unity_rtcSetGatheringStateChangeCallback(Id, gatheringStateCallback) < 0)
-                throw new Exception("Error from unity_rtcSetGatheringStateChangeCallback.");
+            PeerConnectionCallbackBridge.SetInstance1(this);
         }
 
         ~PeerConnection()
@@ -95,26 +74,25 @@ namespace Rtc
             return new DataChannel(dc);
         }
 
-        private void OnLocalDescription(string sdp, string type, IntPtr ptr)
+        public void OnLocalDescription(string sdp, string type, IntPtr ptr)
         {
             Debug.Log($"Local Desciprtion: {sdp}");
             LocalDescriptionCreated?.Invoke(new Description(sdp, type));
         }
 
-        private void OnLocalCandidate(string cand, string mid, IntPtr ptr)
+        public void OnLocalCandidate(string cand, string mid, IntPtr ptr)
         {
             LocalCandidateCreated?.Invoke(new Candidate(cand, mid));
         }
 
-        private void OnStateChange(RtcState state, IntPtr ptr)
+        public void OnStateChange(RtcState state, IntPtr ptr)
         {
             StateChanged?.Invoke(state);
         }
 
-        private void OnGatheringStateChange(RtcGatheringState state, IntPtr ptr)
+        public void OnGatheringStateChange(RtcGatheringState state, IntPtr ptr)
         {
             GatheringStateChanged?.Invoke(state);
         }
-
     }
 }
