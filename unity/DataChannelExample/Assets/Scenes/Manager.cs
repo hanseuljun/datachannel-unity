@@ -27,12 +27,12 @@ public class Manager : MonoBehaviour
         }
     }
 
-    void OnLocalDescription(LocalDescription description)
+    void OnLocalDescription(Description description)
     {
         print($"type: {description.type}, sdp: {description.sdp}");
     }
 
-    void OnLocalCandidate(LocalCandidate candidate)
+    void OnLocalCandidate(Candidate candidate)
     {
         print($"cand: {candidate.cand}, mid: {candidate.mid}");
     }
