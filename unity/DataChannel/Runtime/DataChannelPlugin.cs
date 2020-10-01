@@ -222,7 +222,6 @@ public static class DataChannelPlugin
     public static extern int unity_rtcDeletePeerConnection(int pc);
 
     [DllImport(DLL_NAME)]
-    //public static extern int unity_rtcSetLocalDescriptionCallback(int pc, RtcDescriptionCallbackFunc cb);
     public static extern int unity_rtcSetLocalDescriptionCallback(int pc, RtcDescriptionCallbackFunc cb);
 
     [DllImport(DLL_NAME)]
