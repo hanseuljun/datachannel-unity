@@ -1,3 +1,5 @@
+param ([switch]$debug = $false)
+
 Install-Module VSSetup -Scope CurrentUser
 
 $vsInstance = Get-VSSetupInstance `
@@ -6,11 +8,11 @@ $vsPath = $vsInstance.InstallationPath + "\MSBuild"
 $msBuilds = Get-ChildItem $vsPath -recurse -filter "MSBuild.exe"
 $msBuild = $msBuilds[0].FullName
 
-if ($args[0] -eq "debug") {
+$configuration = "RelWithDebInfo"
+if ($debug) {
     $configuration = "Debug"
-} else {
-    $configuration = "RelWithDebInfo"
 }
+
 $buildPath = (Get-Location).path + "\build"
 
 &$msBuild ("/t:DataChannelUnity", "/p:Configuration=$configuration", "/p:Platform=Win32", "$buildPath\x86\DataChannelUnity.sln")
