@@ -1,6 +1,7 @@
-﻿using AOT;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using AOT;
 
 namespace Rtc
 {
@@ -34,67 +35,59 @@ namespace Rtc
     // NotSupportedException: IL2CPP does not support marshaling delegates that point to instance methods to native code.
     public static class PeerConnectionCallbackBridge
     {
-        public static PeerConnection instance1;
-        public static RtcDescriptionCallbackFunc localDescriptionCallback1;
-        public static RtcCandidateCallbackFunc localCandidateCallback1;
-        public static RtcStateChangeCallbackFunc stateChangeCallback1;
-        public static RtcGatheringStateCallbackFunc gatheringStateCallback1;
+        private static Dictionary<int, PeerConnection> instances;
 
-        public static void SetInstance1(PeerConnection instance)
+        public static void SetInstance(PeerConnection instance)
         {
-            if (instance1 != null)
-                throw new Exception("There is already instance1 in PeerConnectionCallbackBridge.");
+            if (instances == null)
+                instances = new Dictionary<int, PeerConnection>();
 
-            instance1 = instance;
+            instances[instance.Id] = instance;
 
-            localDescriptionCallback1 = new RtcDescriptionCallbackFunc(OnLocalDescription1);
-            if (DataChannelPlugin.unity_rtcSetLocalDescriptionCallback(instance1.Id, localDescriptionCallback1) < 0)
+            if (DataChannelPlugin.unity_rtcSetLocalDescriptionCallback(instance.Id, OnLocalDescription) < 0)
                 throw new Exception("Error from unity_rtcSetLocalDescriptionCallback.");
 
-            localCandidateCallback1 = new RtcCandidateCallbackFunc(OnLocalCandidate1);
-            if (DataChannelPlugin.unity_rtcSetLocalCandidateCallback(instance1.Id, localCandidateCallback1) < 0)
+            if (DataChannelPlugin.unity_rtcSetLocalCandidateCallback(instance.Id, OnLocalCandidate) < 0)
                 throw new Exception("Error from unity_rtcSetLocalCandidateCallback.");
 
-            stateChangeCallback1 = new RtcStateChangeCallbackFunc(OnStateChange1);
-            if (DataChannelPlugin.unity_rtcSetStateChangeCallback(instance1.Id, stateChangeCallback1) < 0)
+            if (DataChannelPlugin.unity_rtcSetStateChangeCallback(instance.Id, OnStateChange) < 0)
                 throw new Exception("Error from unity_rtcSetStateChangeCallback.");
 
-            gatheringStateCallback1 = new RtcGatheringStateCallbackFunc(OnGatheringStateChange1);
-            if (DataChannelPlugin.unity_rtcSetGatheringStateChangeCallback(instance1.Id, gatheringStateCallback1) < 0)
+            if (DataChannelPlugin.unity_rtcSetGatheringStateChangeCallback(instance.Id, OnGatheringStateChange) < 0)
                 throw new Exception("Error from unity_rtcSetGatheringStateChangeCallback.");
         }
 
         public static void Cleanup()
         {
-            instance1 = null;
-            localDescriptionCallback1 = null;
-            localCandidateCallback1 = null;
-            stateChangeCallback1 = null;
-            gatheringStateCallback1 = null;
+            instances = null;
         }
 
         [MonoPInvokeCallback(typeof(RtcDescriptionCallbackFunc))]
-        public static void OnLocalDescription1(string sdp, string type, IntPtr ptr)
+        public static void OnLocalDescription(string sdp, string type, IntPtr ptr)
         {
-            instance1.OnLocalDescription(sdp, type, ptr);
+            int id = ptr.ToInt32();
+            instances?[id].OnLocalDescription(sdp, type);
         }
 
         [MonoPInvokeCallback(typeof(RtcCandidateCallbackFunc))]
-        public static void OnLocalCandidate1(string cand, string mid, IntPtr ptr)
+        public static void OnLocalCandidate(string cand, string mid, IntPtr ptr)
         {
-            instance1.OnLocalCandidate(cand, mid, ptr);
+            int id = ptr.ToInt32();
+            instances?[id].OnLocalCandidate(cand, mid);
         }
 
         [MonoPInvokeCallback(typeof(RtcStateChangeCallbackFunc))]
-        public static void OnStateChange1(RtcState state, IntPtr ptr)
+        public static void OnStateChange(RtcState state, IntPtr ptr)
         {
-            instance1.OnStateChange(state, ptr);
+            int id = ptr.ToInt32();
+            instances?[id].OnStateChange(state);
         }
 
         [MonoPInvokeCallback(typeof(RtcGatheringStateCallbackFunc))]
-        public static void OnGatheringStateChange1(RtcGatheringState state, IntPtr ptr)
+        public static void OnGatheringStateChange(RtcGatheringState state, IntPtr ptr)
         {
-            instance1.OnGatheringStateChange(state, ptr);
+            int id = ptr.ToInt32();
+            instances?[id].OnGatheringStateChange(state);
         }
     }
 
@@ -102,67 +95,59 @@ namespace Rtc
     // NotSupportedException: IL2CPP does not support marshaling delegates that point to instance methods to native code.
     public static class DataChannelCallbackBridge
     {
-        private static DataChannel instance1;
-        public static RtcOpenCallbackFunc openCallback1;
-        public static RtcClosedCallbackFunc closedCallback1;
-        public static RtcErrorCallbackFunc errorCallback1;
-        public static RtcMessageCallbackFunc messageCallback1;
+        private static Dictionary<int, DataChannel> instances;
 
-        public static void SetInstance1(DataChannel instance)
+        public static void SetInstance(DataChannel instance)
         {
-            if (instance1 != null)
-                throw new Exception("There is already instance1 in DataChannelCallbackBridge.");
+            if (instances == null)
+                instances = new Dictionary<int, DataChannel>();
 
-            instance1 = instance;
+            instances[instance.Id] = instance;
 
-            openCallback1 = new RtcOpenCallbackFunc(OnOpen1);
-            if (DataChannelPlugin.unity_rtcSetOpenCallback(instance.Id, openCallback1) < 0)
+            if (DataChannelPlugin.unity_rtcSetOpenCallback(instance.Id, OnOpen) < 0)
                 throw new Exception("Error from unity_rtcSetOpenCallback.");
 
-            closedCallback1 = new RtcClosedCallbackFunc(OnClosed1);
-            if (DataChannelPlugin.unity_rtcSetClosedCallback(instance.Id, closedCallback1) < 0)
+            if (DataChannelPlugin.unity_rtcSetClosedCallback(instance.Id, OnClosed) < 0)
                 throw new Exception("Error from unity_rtcSetClosedCallback.");
 
-            errorCallback1 = new RtcErrorCallbackFunc(OnError1);
-            if (DataChannelPlugin.unity_rtcSetErrorCallback(instance.Id, errorCallback1) < 0)
+            if (DataChannelPlugin.unity_rtcSetErrorCallback(instance.Id, OnError) < 0)
                 throw new Exception("Error from unity_rtcSetErrorCallback.");
 
-            messageCallback1 = new RtcMessageCallbackFunc(OnMessage1);
-            if (DataChannelPlugin.unity_rtcSetMessageCallback(instance.Id, messageCallback1) < 0)
+            if (DataChannelPlugin.unity_rtcSetMessageCallback(instance.Id, OnMessage) < 0)
                 throw new Exception("Error from unity_rtcSetMessageCallback.");
         }
 
         public static void Cleanup()
         {
-            instance1 = null;
-            openCallback1 = null;
-            closedCallback1 = null;
-            errorCallback1 = null;
-            messageCallback1 = null;
+            instances = null;
         }
 
         [MonoPInvokeCallback(typeof(RtcOpenCallbackFunc))]
-        public static void OnOpen1(IntPtr ptr)
+        public static void OnOpen(IntPtr ptr)
         {
-            instance1.OnOpen(ptr);
+            int id = ptr.ToInt32();
+            instances?[id].OnOpen(ptr);
         }
 
         [MonoPInvokeCallback(typeof(RtcClosedCallbackFunc))]
-        public static void OnClosed1(IntPtr ptr)
+        public static void OnClosed(IntPtr ptr)
         {
-            instance1.OnClosed(ptr);
+            int id = ptr.ToInt32();
+            instances?[id].OnClosed(ptr);
         }
 
         [MonoPInvokeCallback(typeof(RtcErrorCallbackFunc))]
-        public static void OnError1(string error, IntPtr ptr)
+        public static void OnError(string error, IntPtr ptr)
         {
-            instance1.OnError(error, ptr);
+            int id = ptr.ToInt32();
+            instances?[id].OnError(error, ptr);
         }
 
         [MonoPInvokeCallback(typeof(RtcMessageCallbackFunc))]
-        public static void OnMessage1(IntPtr meesage, int size, IntPtr ptr)
+        public static void OnMessage(IntPtr meesage, int size, IntPtr ptr)
         {
-            instance1.OnMessage(meesage, size, ptr);
+            int id = ptr.ToInt32();
+            instances?[id].OnMessage(meesage, size, ptr);
         }
     }
 }

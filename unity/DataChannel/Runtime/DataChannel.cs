@@ -16,7 +16,7 @@ namespace Rtc
         public DataChannel(int id)
         {
             Id = id;
-            DataChannelCallbackBridge.SetInstance1(this);
+            DataChannelCallbackBridge.SetInstance(this);
         }
 
         ~DataChannel()

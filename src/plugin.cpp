@@ -28,7 +28,13 @@ extern "C"
         config.portRangeBegin = 0;
         config.portRangeEnd = 0;
 
-        return rtcCreatePeerConnection(&config);
+        int pc{rtcCreatePeerConnection(&config)};
+        if (pc < 0)
+            return pc;
+        // Casting an interger corresponding to an ID as if it is a memory address seems troublesome,
+        // however, this is currently the case.
+        rtcSetUserPointer(pc, reinterpret_cast<void*>(pc));
+        return pc;
     }
 
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcDeletePeerConnection(int pc)
@@ -38,7 +44,8 @@ extern "C"
 
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcSetLocalDescriptionCallback(int pc, rtcDescriptionCallbackFunc cb)
     {
-        return rtcSetLocalDescriptionCallback(pc, cb);
+        int result{rtcSetLocalDescriptionCallback(pc, cb)};
+        return result;
     }
 
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcSetLocalCandidateCallback(int pc, rtcCandidateCallbackFunc cb)
@@ -95,14 +102,22 @@ extern "C"
     // returns dc id
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcAddDataChannel(int pc, const char* label)
     {
-        return rtcAddDataChannel(pc, label);
+        int dc{rtcAddDataChannel(pc, label)};
+        if (dc < 0)
+            return dc;
+        rtcSetUserPointer(dc, reinterpret_cast<void*>(dc));
+        return dc;
     }
 
     // returns dc id
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcAddDataChannelExt(int pc, const char* label, const char* protocol,
                                                                               const rtcReliability* reliability)
     {
-        return rtcAddDataChannelExt(pc, label, protocol, reliability);
+        int dc{rtcAddDataChannelExt(pc, label, protocol, reliability)};
+        if (dc < 0)
+            return dc;
+        rtcSetUserPointer(dc, reinterpret_cast<void*>(dc));
+        return dc;
     }
 
 
@@ -110,14 +125,22 @@ extern "C"
     // returns dc id
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcCreateDataChannel(int pc, const char* label)
     {
-        return rtcCreateDataChannel(pc, label);
+        int dc{rtcCreateDataChannel(pc, label)};
+        if (dc < 0)
+            return dc;
+        rtcSetUserPointer(dc, reinterpret_cast<void*>(dc));
+        return dc;
     }
 
     // returns dc id
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcCreateDataChannelExt(int pc, const char* label, const char* protocol,
                                                                                  const rtcReliability* reliability)
     {
-        return rtcCreateDataChannel(pc, label);
+        int dc{unity_rtcCreateDataChannelExt(pc, label, protocol, reliability)};
+        if (dc < 0)
+            return dc;
+        rtcSetUserPointer(dc, reinterpret_cast<void*>(dc));
+        return dc;
     }
 
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcDeleteDataChannel(int dc)

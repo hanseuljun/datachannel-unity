@@ -40,7 +40,7 @@ namespace Rtc
         {
             string[] iceServers = new string[] { "stun:stun.l.google.com:19302" };
             Id = DataChannelPlugin.unity_rtcCreatePeerConnection(iceServers, iceServers.Length);
-            PeerConnectionCallbackBridge.SetInstance1(this);
+            PeerConnectionCallbackBridge.SetInstance(this);
         }
 
         ~PeerConnection()
@@ -87,22 +87,22 @@ namespace Rtc
             return new DataChannel(dc);
         }
 
-        public void OnLocalDescription(string sdp, string type, IntPtr ptr)
+        public void OnLocalDescription(string sdp, string type)
         {
             LocalDescriptionCreated?.Invoke(new Description(sdp, type));
         }
 
-        public void OnLocalCandidate(string cand, string mid, IntPtr ptr)
+        public void OnLocalCandidate(string cand, string mid)
         {
             LocalCandidateCreated?.Invoke(new Candidate(cand, mid));
         }
 
-        public void OnStateChange(RtcState state, IntPtr ptr)
+        public void OnStateChange(RtcState state)
         {
             StateChanged?.Invoke(state);
         }
 
-        public void OnGatheringStateChange(RtcGatheringState state, IntPtr ptr)
+        public void OnGatheringStateChange(RtcGatheringState state)
         {
             GatheringStateChanged?.Invoke(state);
         }
