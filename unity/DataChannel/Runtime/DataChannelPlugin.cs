@@ -15,10 +15,12 @@ namespace Rtc
 
         public static void Cleanup()
         {
+            // unity_rtcCleanup should come first, otherwise callbacks of cleaned up bridges can be called.
+            DataChannelPlugin.unity_rtcCleanup();
+
             logCallback = null;
             PeerConnectionCallbackBridge.Cleanup();
             DataChannelCallbackBridge.Cleanup();
-            DataChannelPlugin.unity_rtcCleanup();
         }
 
         [MonoPInvokeCallback(typeof(RtcLogCallbackFunc))]
