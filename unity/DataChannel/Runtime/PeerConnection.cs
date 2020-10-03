@@ -40,7 +40,11 @@ namespace Rtc
         {
             string[] iceServers = new string[] { "stun:stun.l.google.com:19302" };
             Id = DataChannelPlugin.unity_rtcCreatePeerConnection(iceServers, iceServers.Length);
+            // This sets callbacks to include Id when they are called as ptr.
+            DataChannelPlugin.unity_rtcSetUserPointer(Id, (IntPtr)Id);
             PeerConnectionCallbackBridge.SetInstance(this);
+
+            Debug.Log("PeerConnection ID: " + Id);
         }
 
         ~PeerConnection()

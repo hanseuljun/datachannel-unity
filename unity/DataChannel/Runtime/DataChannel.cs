@@ -16,6 +16,8 @@ namespace Rtc
         public DataChannel(int id)
         {
             Id = id;
+            // This sets callbacks to include Id when they are called as ptr.
+            DataChannelPlugin.unity_rtcSetUserPointer(Id, (IntPtr)Id);
             DataChannelCallbackBridge.SetInstance(this);
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using AOT;
+using UnityEngine;
 
 namespace Rtc
 {
@@ -65,6 +66,8 @@ namespace Rtc
         [MonoPInvokeCallback(typeof(RtcDescriptionCallbackFunc))]
         public static void OnLocalDescription(string sdp, string type, IntPtr ptr)
         {
+            Debug.Log("OnLocalDescription: " + ptr.ToInt32());
+
             int id = ptr.ToInt32();
             instances?[id].OnLocalDescription(sdp, type);
         }
@@ -201,6 +204,10 @@ public static class DataChannelPlugin
     // Log
     [DllImport(DLL_NAME)]
     public static extern void unity_rtcInitLogger(RtcLogLevel level, RtcLogCallbackFunc cb);
+
+    [DllImport(DLL_NAME)]
+    public static extern void unity_rtcSetUserPointer(int id, IntPtr ptr);
+
     // PeerConnection
     [DllImport(DLL_NAME)]
     public static extern int unity_rtcCreatePeerConnection(string[] ice_servers, int ice_servers_count);
