@@ -3,7 +3,7 @@ project(DataChannelUnity)
 
 #set(CMAKE_FIND_DEBUG_MODE 1)
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/libdatachannel EXCLUDE_FROM_ALL)
+add_subdirectory(${PROJECT_SOURCE_DIR}/libdatachannel)
 set(LIBDATACHANNEL_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/libdatachannel/include)
 
 find_package(OpenSSL REQUIRED)
