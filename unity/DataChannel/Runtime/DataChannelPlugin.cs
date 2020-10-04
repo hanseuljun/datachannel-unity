@@ -64,33 +64,27 @@ namespace Rtc
         }
 
         [MonoPInvokeCallback(typeof(RtcDescriptionCallbackFunc))]
-        public static void OnLocalDescription(string sdp, string type, IntPtr ptr)
+        public static void OnLocalDescription(int pc, string sdp, string type, IntPtr ptr)
         {
-            Debug.Log("OnLocalDescription: " + ptr.ToInt32());
-
-            int id = ptr.ToInt32();
-            instances?[id].OnLocalDescription(sdp, type);
+            instances?[pc].OnLocalDescription(sdp, type);
         }
 
         [MonoPInvokeCallback(typeof(RtcCandidateCallbackFunc))]
-        public static void OnLocalCandidate(string cand, string mid, IntPtr ptr)
+        public static void OnLocalCandidate(int pc, string cand, string mid, IntPtr ptr)
         {
-            int id = ptr.ToInt32();
-            instances?[id].OnLocalCandidate(cand, mid);
+            instances?[pc].OnLocalCandidate(cand, mid);
         }
 
         [MonoPInvokeCallback(typeof(RtcStateChangeCallbackFunc))]
-        public static void OnStateChange(RtcState state, IntPtr ptr)
+        public static void OnStateChange(int pc, RtcState state, IntPtr ptr)
         {
-            int id = ptr.ToInt32();
-            instances?[id].OnStateChange(state);
+            instances?[pc].OnStateChange(state);
         }
 
         [MonoPInvokeCallback(typeof(RtcGatheringStateCallbackFunc))]
-        public static void OnGatheringStateChange(RtcGatheringState state, IntPtr ptr)
+        public static void OnGatheringStateChange(int pc, RtcGatheringState state, IntPtr ptr)
         {
-            int id = ptr.ToInt32();
-            instances?[id].OnGatheringStateChange(state);
+            instances?[pc].OnGatheringStateChange(state);
         }
     }
 
@@ -126,30 +120,26 @@ namespace Rtc
         }
 
         [MonoPInvokeCallback(typeof(RtcOpenCallbackFunc))]
-        public static void OnOpen(IntPtr ptr)
+        public static void OnOpen(int id, IntPtr ptr)
         {
-            int id = ptr.ToInt32();
             instances?[id].OnOpen(ptr);
         }
 
         [MonoPInvokeCallback(typeof(RtcClosedCallbackFunc))]
-        public static void OnClosed(IntPtr ptr)
+        public static void OnClosed(int id, IntPtr ptr)
         {
-            int id = ptr.ToInt32();
             instances?[id].OnClosed(ptr);
         }
 
         [MonoPInvokeCallback(typeof(RtcErrorCallbackFunc))]
-        public static void OnError(string error, IntPtr ptr)
+        public static void OnError(int id, string error, IntPtr ptr)
         {
-            int id = ptr.ToInt32();
             instances?[id].OnError(error, ptr);
         }
 
         [MonoPInvokeCallback(typeof(RtcMessageCallbackFunc))]
-        public static void OnMessage(IntPtr meesage, int size, IntPtr ptr)
+        public static void OnMessage(int id, IntPtr meesage, int size, IntPtr ptr)
         {
-            int id = ptr.ToInt32();
             instances?[id].OnMessage(meesage, size, ptr);
         }
     }
@@ -184,18 +174,18 @@ public enum RtcLogLevel : int
 }
 
 public delegate void RtcLogCallbackFunc(RtcLogLevel level, [MarshalAs(UnmanagedType.LPStr)] string message);
-public delegate void RtcDescriptionCallbackFunc([MarshalAs(UnmanagedType.LPStr)] string sdp, [MarshalAs(UnmanagedType.LPStr)] string type, IntPtr ptr);
-public delegate void RtcCandidateCallbackFunc([MarshalAs(UnmanagedType.LPStr)] string cand, [MarshalAs(UnmanagedType.LPStr)] string mid, IntPtr ptr);
-public delegate void RtcStateChangeCallbackFunc(RtcState state, IntPtr ptr);
-public delegate void RtcGatheringStateCallbackFunc(RtcGatheringState satte, IntPtr ptr);
-public delegate void RtcDataChannelCallbackFunc(int dc, IntPtr ptr);
-public delegate void RtcTrackCallbackFunc(int tr, IntPtr ptr);
-public delegate void RtcOpenCallbackFunc(IntPtr ptr);
-public delegate void RtcClosedCallbackFunc(IntPtr ptr);
-public delegate void RtcErrorCallbackFunc([MarshalAs(UnmanagedType.LPStr)] string error, IntPtr ptr);
-public delegate void RtcMessageCallbackFunc(IntPtr meesage, int size, IntPtr ptr);
-public delegate void RtcBufferedAmountLowCallbackFunc(IntPtr ptr);
-public delegate void RtcAvailableCallbackFunc(IntPtr ptr);
+public delegate void RtcDescriptionCallbackFunc(int pc, [MarshalAs(UnmanagedType.LPStr)] string sdp, [MarshalAs(UnmanagedType.LPStr)] string type, IntPtr ptr);
+public delegate void RtcCandidateCallbackFunc(int pc, [MarshalAs(UnmanagedType.LPStr)] string cand, [MarshalAs(UnmanagedType.LPStr)] string mid, IntPtr ptr);
+public delegate void RtcStateChangeCallbackFunc(int pc, RtcState state, IntPtr ptr);
+public delegate void RtcGatheringStateCallbackFunc(int pc, RtcGatheringState satte, IntPtr ptr);
+public delegate void RtcDataChannelCallbackFunc(int pc, int dc, IntPtr ptr);
+public delegate void RtcTrackCallbackFunc(int pc, int tr, IntPtr ptr);
+public delegate void RtcOpenCallbackFunc(int id, IntPtr ptr);
+public delegate void RtcClosedCallbackFunc(int id, IntPtr ptr);
+public delegate void RtcErrorCallbackFunc(int id, [MarshalAs(UnmanagedType.LPStr)] string error, IntPtr ptr);
+public delegate void RtcMessageCallbackFunc(int id, IntPtr meesage, int size, IntPtr ptr);
+public delegate void RtcBufferedAmountLowCallbackFunc(int id, IntPtr ptr);
+public delegate void RtcAvailableCallbackFunc(int id, IntPtr ptr);
 
 public static class DataChannelPlugin
 {
