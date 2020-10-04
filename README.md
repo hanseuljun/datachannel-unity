@@ -16,7 +16,6 @@
 |   +-- build-vs.ps1                 # Runs cmake using vcpkg 
 +-- unity 
 |   +-- DataChannel                  # The Unity package 
-|   +-- DataChannelExample           # Example Unity project for testing 
 |   +-- bin                          # .meta files for the ./DataChannel package 
 +-- vcpkg                            # microsoft/vcpkg as a submodule 
 +-- build-plugin.ps1                 # Builds the unity plugin for /unity/DataChannel with code in /src 

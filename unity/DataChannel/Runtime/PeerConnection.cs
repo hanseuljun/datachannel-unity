@@ -73,12 +73,12 @@ namespace Rtc
         public string GetLocalDescriptionSdp()
         {
             // Assuming 8 KB would be enough for a SDP message.
-            int sdpBufferSize = 8 * 1024;
-            IntPtr sdpBuffer = Marshal.AllocHGlobal(sdpBufferSize);
-            if (DataChannelPlugin.unity_rtcGetLocalDescriptionSdp(Id, sdpBuffer, sdpBufferSize) < 0)
+            int bufferSize = 8 * 1024;
+            IntPtr buffer = Marshal.AllocHGlobal(bufferSize);
+            if (DataChannelPlugin.unity_rtcGetLocalDescription(Id, buffer, bufferSize) < 0)
                 throw new Exception("Error from unity_rtcGetLocalDescriptionSdp.");
-            string sdp = Marshal.PtrToStringAnsi(sdpBuffer);
-            Marshal.FreeHGlobal(sdpBuffer);
+            string sdp = Marshal.PtrToStringAnsi(buffer);
+            Marshal.FreeHGlobal(buffer);
             return sdp;
         }
 

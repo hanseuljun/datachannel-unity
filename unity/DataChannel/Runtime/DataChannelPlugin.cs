@@ -237,7 +237,7 @@ public static class DataChannelPlugin
     public static extern int unity_rtcAddRemoteCandidate(int pc, string cand, string mid);
 
     [DllImport(DLL_NAME)]
-    public static extern int unity_rtcGetLocalDescriptionSdp(int pc, IntPtr buffer, int size);
+    public static extern int unity_rtcGetLocalDescription(int pc, IntPtr buffer, int size);
 
     // DataChannel
     [DllImport(DLL_NAME)]

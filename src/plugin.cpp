@@ -72,9 +72,14 @@ extern "C"
         return rtcAddRemoteCandidate(pc, cand, mid);
     }
 
-    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcGetLocalDescriptionSdp(int pc, char* buffer, int size)
+    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcGetLocalDescription(int pc, char* buffer, int size)
     {
-        return rtcGetLocalDescriptionSdp(pc, buffer, size);
+        return rtcGetLocalDescription(pc, buffer, size);
+    }
+
+    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcGetRemoteDescription(int pc, char* buffer, int size)
+    {
+        return rtcGetRemoteDescription(pc, buffer, size);
     }
 
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcGetLocalAddress(int pc, char* buffer, int size)
