@@ -15,18 +15,18 @@ if ($debug) {
 
 $buildPath = (Get-Location).path + "\build"
 
-&$msBuild ("/t:DataChannelUnity", "/p:Configuration=$configuration", "/p:Platform=Win32", "$buildPath\x86\DataChannelUnity.sln")
+&$msBuild ("/t:DataChannelUnity", "/p:Configuration=$configuration", "/p:Platform=Win32", "$buildPath\x86-uwp\DataChannelUnity.sln")
 &$msBuild ("/t:DataChannelUnity", "/p:Configuration=$configuration", "/p:Platform=x64", "$buildPath\x64\DataChannelUnity.sln")
 
 $packagePath = (Get-Location).path + "\unity\DataChannel"
 
-$x86Path = "$buildPath\x86\src\$configuration"
+$x86UwpPath = "$buildPath\x86-uwp\src\$configuration"
 $x64Path = "$buildPath\x64\src\$configuration"
 $uwpPluginPath = "$packagePath\Runtime\Plugins\UWP\x86"
 $editorPath = "$packagePath\Editor\Plugins"
 $binPath = (Get-Location).path + "\unity\bin"
 
-Copy-Item "$x86Path\DataChannelUnity.dll" -Destination $uwpPluginPath
+Copy-Item "$x86UwpPath\DataChannelUnity.dll" -Destination $uwpPluginPath
 Copy-Item "$binPath\DataChannelUnity.dll.meta" -Destination $uwpPluginPath
 
 if ($debug -eq $false) {
@@ -43,11 +43,11 @@ if ($debug -eq $false) {
 	Copy-Item "$binPath\vcruntime140d.dll.meta" -Destination $uwpPluginPath
 }
 
-Copy-Item "$x86Path\libcrypto-1_1.dll" -Destination $uwpPluginPath
+Copy-Item "$x86UwpPath\libcrypto-1_1.dll" -Destination $uwpPluginPath
 Copy-Item "$binPath\libcrypto-1_1.dll.meta" -Destination $uwpPluginPath
 
+Copy-Item "$x86UwpPath\libssl-1_1.dll" -Destination $uwpPluginPath
 Copy-Item "$binPath\libssl-1_1.dll.meta" -Destination $uwpPluginPath
-Copy-Item "$x86Path\libssl-1_1.dll" -Destination $uwpPluginPath
 
 
 Copy-Item "$x64Path\DataChannelUnity.dll" -Destination $editorPath

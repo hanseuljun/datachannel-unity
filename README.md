@@ -3,7 +3,7 @@
 # How to Build
 1. Install opennssl for both x86 and x64 using vcpkg.
 ```powershell
-.\vcpkg.exe install opennssl:x86-windows openssl:x64-windows
+.\vcpkg.exe install opennssl:x86-uwp openssl:x64-windows
 ```
 2. Run build-vs.ps1
 3. Run build-plugin.ps1
