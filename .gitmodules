@@ -1,6 +1,6 @@
 [submodule "libdatachannel"]
 	path = libdatachannel
-	url = https://github.com/paullouisageneau/libdatachannel.git
+	url = https://github.com/hanseuljun/libdatachannel.git
 [submodule "vcpkg"]
 	path = vcpkg
 	url = https://github.com/microsoft/vcpkg.git
