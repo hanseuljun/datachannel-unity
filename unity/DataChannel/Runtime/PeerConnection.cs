@@ -36,9 +36,8 @@ namespace Rtc
         public Action<RtcGatheringState> GatheringStateChanged { get; set; }
         public int Id { get; private set; }
 
-        public PeerConnection()
+        public PeerConnection(string[] iceServers)
         {
-            string[] iceServers = new string[] { "stun:stun.l.google.com:19302" };
             Id = DataChannelPlugin.unity_rtcCreatePeerConnection(iceServers, iceServers.Length);
             PeerConnectionCallbackBridge.SetInstance(this);
 
