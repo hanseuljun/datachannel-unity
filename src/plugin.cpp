@@ -57,9 +57,9 @@ extern "C"
         return rtcSetGatheringStateChangeCallback(pc, cb);
     }
 
-    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcSetLocalDescription(int pc)
+    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcSetLocalDescription(int pc, const char* type)
     {
-        return rtcSetLocalDescription(pc);
+        return rtcSetLocalDescription(pc, type);
     }
 
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcSetRemoteDescription(int pc, const char* sdp, const char* type)

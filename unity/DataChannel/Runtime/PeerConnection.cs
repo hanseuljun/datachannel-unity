@@ -49,9 +49,9 @@ namespace Rtc
             DataChannelPlugin.unity_rtcDeletePeerConnection(Id);
         }
 
-        public void SetLocalDescription()
+        public void SetLocalDescription(string type)
         {
-            if (DataChannelPlugin.unity_rtcSetLocalDescription(Id) < 0)
+            if (DataChannelPlugin.unity_rtcSetLocalDescription(Id, type) < 0)
                 throw new Exception("Error from unity_rtcSetLocalDescription.");
         }
 

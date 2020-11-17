@@ -218,7 +218,7 @@ public static class DataChannelPlugin
     public static extern int unity_rtcSetGatheringStateChangeCallback(int pc, RtcGatheringStateCallbackFunc cb);
 
     [DllImport(DLL_NAME)]
-    public static extern int unity_rtcSetLocalDescription(int pc);
+    public static extern int unity_rtcSetLocalDescription(int pc, string type);
 
     [DllImport(DLL_NAME)]
     public static extern int unity_rtcSetRemoteDescription(int pc, string sdp, string type);
