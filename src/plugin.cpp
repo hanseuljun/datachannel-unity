@@ -104,26 +104,12 @@ extern "C"
         return rtcAddDataChannel(pc, label);
     }
 
-    // returns dc id
-    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcAddDataChannelExt(int pc, const char* label, const char* protocol,
-                                                                              const rtcReliability* reliability)
-    {
-        return rtcAddDataChannelExt(pc, label, protocol, reliability);
-    }
-
 
     // Equivalent to calling rtcAddDataChannel() and rtcSetLocalDescription()
     // returns dc id
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcCreateDataChannel(int pc, const char* label)
     {
         return rtcCreateDataChannel(pc, label);
-    }
-
-    // returns dc id
-    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcCreateDataChannelExt(int pc, const char* label, const char* protocol,
-                                                                                 const rtcReliability* reliability)
-    {
-        return rtcCreateDataChannelExt(pc, label, protocol, reliability);
     }
 
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcDeleteDataChannel(int dc)
