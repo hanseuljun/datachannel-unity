@@ -104,7 +104,6 @@ extern "C"
         return rtcAddDataChannel(pc, label);
     }
 
-
     // Equivalent to calling rtcAddDataChannel() and rtcSetLocalDescription()
     // returns dc id
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcCreateDataChannel(int pc, const char* label)
