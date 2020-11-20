@@ -22,6 +22,10 @@ $packagePath = (Get-Location).path + "\unity\DataChannel"
 
 $x86UwpPath = "$buildPath\x86-uwp\src\$configuration"
 $x64Path = "$buildPath\x64\src\$configuration"
+
+$x86UwpDataChannelPath = "$buildPath\x86-uwp\libdatachannel\$configuration"
+$x64DataChannelPath = "$buildPath\x64\libdatachannel\$configuration"
+
 $uwpX86PluginPath = "$packagePath\Runtime\Plugins\UWP\x86"
 $editorPath = "$packagePath\Editor\Plugins"
 $binPath = (Get-Location).path + "\unity\bin"
@@ -35,8 +39,12 @@ Copy-Item "$binPath\libcrypto-1_1.dll.meta" -Destination $uwpX86PluginPath
 Copy-Item "$x86UwpPath\libssl-1_1.dll" -Destination $uwpX86PluginPath
 Copy-Item "$binPath\libssl-1_1.dll.meta" -Destination $uwpX86PluginPath
 
+Copy-Item "$x86UwpDataChannelPath\datachannel.dll" -Destination $uwpX86PluginPath
+Copy-Item "$binPath\datachannel.dll.meta" -Destination $uwpX86PluginPath
+
 Copy-Item "$x64Path\DataChannelUnity.dll" -Destination $editorPath
 Copy-Item "$x64Path\libcrypto-1_1-x64.dll" -Destination $editorPath
 Copy-Item "$x64Path\libssl-1_1-x64.dll" -Destination $editorPath
+Copy-Item "$x64DataChannelPath\datachannel.dll" -Destination $editorPath
 
 Pause
