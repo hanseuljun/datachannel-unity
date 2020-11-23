@@ -33,18 +33,10 @@ $binPath = (Get-Location).path + "\unity\bin"
 Copy-Item "$x86UwpPath\DataChannelUnity.dll" -Destination $uwpX86PluginPath
 Copy-Item "$binPath\DataChannelUnity.dll.meta" -Destination $uwpX86PluginPath
 
-Copy-Item "$x86UwpPath\libcrypto-1_1.dll" -Destination $uwpX86PluginPath
-Copy-Item "$binPath\libcrypto-1_1.dll.meta" -Destination $uwpX86PluginPath
-
-Copy-Item "$x86UwpPath\libssl-1_1.dll" -Destination $uwpX86PluginPath
-Copy-Item "$binPath\libssl-1_1.dll.meta" -Destination $uwpX86PluginPath
-
 Copy-Item "$x86UwpDataChannelPath\datachannel.dll" -Destination $uwpX86PluginPath
 Copy-Item "$binPath\datachannel.dll.meta" -Destination $uwpX86PluginPath
 
 Copy-Item "$x64Path\DataChannelUnity.dll" -Destination $editorPath
-Copy-Item "$x64Path\libcrypto-1_1-x64.dll" -Destination $editorPath
-Copy-Item "$x64Path\libssl-1_1-x64.dll" -Destination $editorPath
 Copy-Item "$x64DataChannelPath\datachannel.dll" -Destination $editorPath
 
 Pause
