@@ -1,0 +1,2 @@
+openssl:x86-uwp
+openssl:x64-windows
