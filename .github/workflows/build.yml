@@ -1,0 +1,29 @@
+name: Build
+on:
+  push:
+    branches:
+      - master
+jobs:
+  bulid-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: submodules
+        run: git submodule update --init --recursive
+
+      - name: Set vcpkg's response file path used as part of cache's key.
+        uses: lukka/set-shell-env@master
+        with:
+          vcpkgResponseFile: ${{ github.workspace }}/vcpkgs.txt
+          
+      - name: Restore from cache and run vcpkg
+        uses: lukka/run-vcpkg@master
+        with:
+          vcpkgArguments: '@${{ env.vcpkgResponseFile }}'
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          appendedCacheKey: ${{ hashFiles(env.vcpkgResponseFile) }}
+
+      - name: cmake-vs
+        run: .\cmake-vs.ps1
+      - name: build-plugin
+        run: .\build-plugin.ps1

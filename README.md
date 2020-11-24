@@ -1,10 +1,7 @@
 # datachannel-unity
 
 # How to Build
-1. Install opennssl for both x86 and x64 using vcpkg.
-```powershell
-.\vcpkg.exe install openssl:x86-uwp openssl:x64-windows
-```
+1. Run init-vcpkg.ps1
 2. Run cmake-vs.ps1
 3. Run build-plugin.ps1
 
