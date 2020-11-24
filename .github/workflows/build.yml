@@ -12,15 +12,15 @@ jobs:
         run: git submodule update --init --recursive
 
       - name: Set vcpkg's response file path used as part of cache's key.
-        uses: lukka/set-shell-env@master
+        uses: lukka/set-shell-env@v1
         with:
-          vcpkgResponseFile: ${{ github.workspace }}/vcpkgs.txt
-          
+          vcpkgResponseFile: ${{ github.workspace }}\vcpkgs.txt
+
       - name: Restore from cache and run vcpkg
-        uses: lukka/run-vcpkg@master
+        uses: lukka/run-vcpkg@v5
         with:
           vcpkgArguments: '@${{ env.vcpkgResponseFile }}'
-          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          vcpkgDirectory: '${{ github.workspace }}\vcpkg'
           appendedCacheKey: ${{ hashFiles(env.vcpkgResponseFile) }}
 
       - name: cmake-vs
