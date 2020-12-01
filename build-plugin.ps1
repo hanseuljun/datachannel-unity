@@ -36,7 +36,15 @@ Copy-Item "$binPath\DataChannelUnity.dll.meta" -Destination $uwpX86PluginPath
 Copy-Item "$x86UwpDataChannelPath\datachannel.dll" -Destination $uwpX86PluginPath
 Copy-Item "$binPath\datachannel.dll.meta" -Destination $uwpX86PluginPath
 
+Copy-Item "$x86UwpDataChannelPath\libcrypto-1_1.dll" -Destination $uwpX86PluginPath
+Copy-Item "$binPath\libcrypto-1_1.dll.meta" -Destination $uwpX86PluginPath
+
+Copy-Item "$x86UwpDataChannelPath\libssl-1_1.dll" -Destination $uwpX86PluginPath
+Copy-Item "$binPath\libssl-1_1.dll.meta" -Destination $uwpX86PluginPath
+
 Copy-Item "$x64Path\DataChannelUnity.dll" -Destination $editorPath
 Copy-Item "$x64DataChannelPath\datachannel.dll" -Destination $editorPath
+Copy-Item "$x64DataChannelPath\libcrypto-1_1-x64.dll" -Destination $editorPath
+Copy-Item "$x64DataChannelPath\libssl-1_1-x64.dll" -Destination $editorPath
 
 Pause
