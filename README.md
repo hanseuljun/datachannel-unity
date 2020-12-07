@@ -1,7 +1,7 @@
 # datachannel-unity
 
 # How to Build
-1. Run init-vcpkg.ps1
+1. Run install-vcpkgs.ps1
 2. Run cmake-vs.ps1
 3. Run build-plugin.ps1
 
