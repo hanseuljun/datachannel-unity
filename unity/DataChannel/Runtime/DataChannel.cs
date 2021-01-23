@@ -8,7 +8,7 @@ namespace Rtc
     {
         public Action Opened { get; set; }
         public Action Closed { get; set; }
-        public Action<string> ErrorCreated { get; set; }
+        public Action<string> ErrorReceived { get; set; }
         public Action<byte[]> MessageReceived { get; set; }
 
         public int Id { get; private set; }
@@ -44,7 +44,7 @@ namespace Rtc
 
         public void OnError(string error, IntPtr ptr)
         {
-            ErrorCreated?.Invoke(error);
+            ErrorReceived?.Invoke(error);
         }
 
         public void OnMessage(IntPtr meesage, int size, IntPtr ptr)
