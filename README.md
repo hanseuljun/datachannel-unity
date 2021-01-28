@@ -5,6 +5,12 @@
 2. Run cmake-vs.ps1
 3. Run build-plugin.ps1
 
+# How to Use
+1. Add this repository as a submodule to your repository.
+2. Build this repository.
+3. Add /unity/DataChannel as a local package to your Unity project.
+4. Write code using scripts at /unity/DataChannel/Runtime. DataChannelPlugin.cs contains the P/Invoke methods connected to the C APIs of libdatachannel (https://github.com/paullouisageneau/libdatachannel/blob/master/include/rtc/rtc.h). DataChannel and PeerConnection are C# wrapper classes that would be easier to use.
+
 ## Directory Layout
 ```
 . 
