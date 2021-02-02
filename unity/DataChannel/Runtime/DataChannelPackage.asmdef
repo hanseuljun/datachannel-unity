@@ -1,5 +1,6 @@
 {
     "name": "DataChannelPackage",
+    "rootNamespace": "",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
