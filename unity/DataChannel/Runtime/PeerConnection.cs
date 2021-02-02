@@ -88,6 +88,15 @@ namespace Rtc
             return new DataChannel(dc);
         }
 
+        public DataChannel AddDataChannelEx(string label, DataChannelInit init)
+        {
+            int dc = DataChannelPlugin.unity_rtcAddDataChannelEx(Id, label, init.Ptr);
+            if (dc < 0)
+                throw new Exception("Error from unity_rtcAddDataChannel.");
+
+            return new DataChannel(dc);
+        }
+
         public void OnLocalDescription(string sdp, string type)
         {
             LocalDescriptionCreated?.Invoke(new Description(sdp, type));

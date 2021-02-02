@@ -2,35 +2,35 @@ using System;
 
 public class DataChannelInit
 {
-    private IntPtr ptr;
+    public IntPtr Ptr { get; private set; }
 
     public DataChannelInit()
     {
-        ptr = DataChannelPlugin.create_data_channel_init();
+        Ptr = DataChannelPlugin.create_data_channel_init();
     }
 
     ~DataChannelInit()
     {
-        DataChannelPlugin.delete_data_channel_init(ptr);
+        DataChannelPlugin.delete_data_channel_init(Ptr);
     }
 
     public bool GetReliabilityUnordered()
     {
-        return DataChannelPlugin.data_channel_init_get_reliability_unordered(ptr);
+        return DataChannelPlugin.data_channel_init_get_reliability_unordered(Ptr);
     }
 
     public void SetReliabilityUnordered(bool unordered)
     {
-        DataChannelPlugin.data_channel_init_set_reliability_unordered(ptr, unordered);
+        DataChannelPlugin.data_channel_init_set_reliability_unordered(Ptr, unordered);
     }
 
     public bool GetReliabilityUnreliable()
     {
-        return DataChannelPlugin.data_channel_init_get_reliability_unreliable(ptr);
+        return DataChannelPlugin.data_channel_init_get_reliability_unreliable(Ptr);
     }
 
     public void SetReliabilityUnreliable(bool unreliable)
     {
-        DataChannelPlugin.data_channel_init_set_reliability_unreliable(ptr, unreliable);
+        DataChannelPlugin.data_channel_init_set_reliability_unreliable(Ptr, unreliable);
     }
 }
