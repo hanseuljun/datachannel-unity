@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 
 namespace Rtc
 {
-
     public class DataChannel
     {
         public Action Opened { get; set; }
