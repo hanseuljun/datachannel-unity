@@ -190,6 +190,25 @@ public static class DataChannelPlugin
 {
     private const string DLL_NAME = "DataChannelUnity";
 
+    // DataChannelInit
+    [DllImport(DLL_NAME)]
+    public static extern IntPtr create_data_channel_init();
+
+    [DllImport(DLL_NAME)]
+    public static extern void delete_data_channel_init(IntPtr ptr);
+
+    [DllImport(DLL_NAME)]
+    public static extern bool data_channel_init_get_reliability_unordered(IntPtr ptr);
+
+    [DllImport(DLL_NAME)]
+    public static extern void data_channel_init_set_reliability_unordered(IntPtr ptr, bool unordered);
+
+    [DllImport(DLL_NAME)]
+    public static extern bool data_channel_init_get_reliability_unreliable(IntPtr ptr);
+
+    [DllImport(DLL_NAME)]
+    public static extern void data_channel_init_set_reliability_unreliable(IntPtr ptr, bool unreliable);
+
     // Log
     [DllImport(DLL_NAME)]
     public static extern void unity_rtcInitLogger(RtcLogLevel level, RtcLogCallbackFunc cb);

@@ -5,6 +5,48 @@
 
 extern "C"
 {
+    UNITY_INTERFACE_EXPORT rtcDataChannelInit* UNITY_INTERFACE_API
+    create_data_channel_init()
+    {
+        rtcReliability reliability;
+        reliability.unordered = false;
+        reliability.unreliable = false;
+        reliability.maxPacketLifeTime = 0;
+        reliability.maxRetransmits = 0;
+        return new rtcDataChannelInit{reliability, "", false, false, 0};
+    }
+
+    UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API
+    delete_data_channel_init(rtcDataChannelInit* ptr)
+    {
+        delete ptr;
+    }
+
+    UNITY_INTERFACE_EXPORT bool UNITY_INTERFACE_API
+    data_channel_init_get_reliability_unordered(rtcDataChannelInit* ptr)
+    {
+        return ptr->reliability.unordered;
+    }
+
+    UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API
+    data_channel_init_set_reliability_unordered(rtcDataChannelInit* ptr, bool unordered)
+    {
+        ptr->reliability.unordered = unordered;
+    }
+
+    UNITY_INTERFACE_EXPORT bool UNITY_INTERFACE_API
+    data_channel_init_get_reliability_unreliable(rtcDataChannelInit* ptr)
+    {
+        return ptr->reliability.unreliable;
+    }
+
+    UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API
+    data_channel_init_set_reliability_unreliable(rtcDataChannelInit* ptr,
+                                                 bool unreliable)
+    {
+        ptr->reliability.unreliable = unreliable;
+    }
+
     // Log
     // NULL cb to log to stdout
     UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API unity_rtcInitLogger(rtcLogLevel level, rtcLogCallbackFunc cb)
