@@ -1,9 +1,7 @@
 # datachannel-unity
 
 # How to Build
-1. Run install-vcpkgs.ps1
-2. Run cmake-vs.ps1
-3. Run build-plugin.ps1
+* Run bootstrap.ps1
 
 # How to Use
 1. Add this repository as a submodule to your repository.
