@@ -24,6 +24,6 @@ jobs:
           appendedCacheKey: ${{ hashFiles(env.vcpkgResponseFile) }}
 
       - name: cmake-vs
-        run: .\cmake-vs.ps1
+        run: .\scripts\cmake-vs.ps1
       - name: build-plugin
-        run: .\build-plugin.ps1
+        run: .\scripts\build-plugin.ps1
