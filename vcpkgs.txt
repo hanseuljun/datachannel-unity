@@ -1,2 +1,3 @@
-openssl:x86-uwp
+openssl:arm64-uwp
 openssl:x64-windows
+openssl:x86-uwp
