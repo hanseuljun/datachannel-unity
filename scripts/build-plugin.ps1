@@ -13,18 +13,18 @@ if ($debug) {
     $configuration = "Debug"
 }
 
-$buildPath = (Get-Location).path + "\build"
+$buildPath = $PSScriptRoot + "\..\build"
 
 &$msBuild ("/t:DataChannelUnity", "/p:Configuration=$configuration", "/p:Platform=ARM64", "$buildPath\arm64-uwp\DataChannelUnity.sln")
 &$msBuild ("/t:DataChannelUnity", "/p:Configuration=$configuration", "/p:Platform=x64", "$buildPath\x64\DataChannelUnity.sln")
 &$msBuild ("/t:DataChannelUnity", "/p:Configuration=$configuration", "/p:Platform=Win32", "$buildPath\x86-uwp\DataChannelUnity.sln")
 
-$packagePath = (Get-Location).path + "\unity\DataChannel"
+$packagePath = $PSScriptRoot + "\..\unity\DataChannel"
 
 $arm64UwpPath = "$buildPath\arm64-uwp\src\$configuration"
 $arm64UwpDataChannelPath = "$buildPath\arm64-uwp\libdatachannel\$configuration"
 $arm64UwpPluginPath = "$packagePath\Runtime\Plugins\UWP\arm64"
-$arm64UwpBinPath = (Get-Location).path + "\unity\bin\arm64-uwp"
+$arm64UwpBinPath = $PSScriptRoot + "\..\unity\bin\arm64-uwp"
 
 Copy-Item "$arm64UwpPath\DataChannelUnity.dll" -Destination $arm64UwpPluginPath
 Copy-Item "$arm64UwpBinPath\DataChannelUnity.dll.meta" -Destination $arm64UwpPluginPath
@@ -52,7 +52,7 @@ Copy-Item "$x64DataChannelPath\libssl-1_1-x64.dll" -Destination $editorPath
 $x86UwpPath = "$buildPath\x86-uwp\src\$configuration"
 $x86UwpDataChannelPath = "$buildPath\x86-uwp\libdatachannel\$configuration"
 $x86UwpPluginPath = "$packagePath\Runtime\Plugins\UWP\x86"
-$x86UwpBinPath = (Get-Location).path + "\unity\bin\x86-uwp"
+$x86UwpBinPath = $PSScriptRoot + "\..\unity\bin\x86-uwp"
 
 Copy-Item "$x86UwpPath\DataChannelUnity.dll" -Destination $x86UwpPluginPath
 Copy-Item "$x86UwpBinPath\DataChannelUnity.dll.meta" -Destination $x86UwpPluginPath
@@ -65,5 +65,3 @@ Copy-Item "$x86UwpBinPath\libcrypto-1_1.dll.meta" -Destination $x86UwpPluginPath
 
 Copy-Item "$x86UwpDataChannelPath\libssl-1_1.dll" -Destination $x86UwpPluginPath
 Copy-Item "$x86UwpBinPath\libssl-1_1.dll.meta" -Destination $x86UwpPluginPath
-
-Pause
