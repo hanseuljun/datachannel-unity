@@ -1,18 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Rtc;
 
 public class CopyPasteOfferer : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private PeerConnection peerConnection;
+    private DataChannel dataChannel;
+
     void Start()
     {
-        
+        DataChannelPluginUtils.InitLogger(RtcLogLevel.RTC_LOG_DEBUG);
+        // See https://github.com/paullouisageneau/libdatachannel/issues/275
+        // for how to let libdatachannel know about the ICE servers.
+        string[] iceServers = new string[] { "stun.l.google.com:19302" };
+        peerConnection = new PeerConnection(iceServers);
+        peerConnection.LocalDescriptionCreated = OnLocalDescription;
+        peerConnection.LocalCandidateCreated = OnLocalCandidate;
+        dataChannel = peerConnection.AddDataChannel("datachannelexample");
+        peerConnection.SetLocalDescription("offer");
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnLocalDescription(Description description)
     {
-        
+        print("description:\n" + description.sdp);
+    }
+
+    void OnLocalCandidate(Candidate candidate)
+    {
+        print("candidate:\n" + candidate.cand);
     }
 }
