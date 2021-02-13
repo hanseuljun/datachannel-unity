@@ -78,6 +78,12 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "datachannel-unity": {
+      "version": "file:../../DataChannel",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
