@@ -5,12 +5,30 @@
 
 extern "C"
 {
+    // These enum getter functions are here since the enums don't have a fixed
+    // numeric value yet.
+    UNITY_INTERFACE_EXPORT rtcCodec UNITY_INTERFACE_API get_rtc_codec_h264()
+    {
+        return RTC_CODEC_H264;
+    }
+
+    UNITY_INTERFACE_EXPORT rtcCodec UNITY_INTERFACE_API get_rtc_codec_opus()
+    {
+        return RTC_CODEC_OPUS;
+    }
+
+    UNITY_INTERFACE_EXPORT rtcDirection UNITY_INTERFACE_API
+    get_rtc_direction_recvonly()
+    {
+        return RTC_DIRECTION_RECVONLY;
+    }
+
     UNITY_INTERFACE_EXPORT rtcReliability* UNITY_INTERFACE_API
     create_reliability()
     {
         return new rtcReliability{false, false, 0, 0};
     }
-    
+
     UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API
     delete_reliability(rtcReliability* ptr)
     {
@@ -55,13 +73,15 @@ extern "C"
     }
 
     UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API
-    data_channel_init_get_reliability(rtcDataChannelInit* ptr, rtcReliability* reliability)
+    data_channel_init_get_reliability(rtcDataChannelInit* ptr,
+                                      rtcReliability* reliability)
     {
         *reliability = ptr->reliability;
     }
 
     UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API
-    data_channel_init_set_reliability(rtcDataChannelInit* ptr, rtcReliability* reliability)
+    data_channel_init_set_reliability(rtcDataChannelInit* ptr,
+                                      rtcReliability* reliability)
     {
         ptr->reliability = *reliability;
     }

@@ -192,6 +192,16 @@ extern "C"
         return rtcGetTrackDescription(tr, buffer, size);
     }
 
+    // Media
+    UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API unity_rtcAddTrackEx(
+        int pc, rtcCodec codec, int payloadType, uint32_t ssrc,
+        const char* _mid, rtcDirection direction, const char* _name,
+        const char* _msid, const char* _trackID)
+    {
+        return rtcAddTrackEx(pc, codec, payloadType, ssrc, _mid, direction,
+                             _name, _msid, _trackID);
+    }
+
     // DataChannel, Track, and WebSocket common API
     UNITY_INTERFACE_EXPORT int UNITY_INTERFACE_API
     unity_rtcSetOpenCallback(int id, rtcOpenCallbackFunc cb)
