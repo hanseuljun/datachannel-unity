@@ -5,24 +5,6 @@
 
 extern "C"
 {
-    // These enum getter functions are here since the enums don't have a fixed
-    // numeric value yet.
-    UNITY_INTERFACE_EXPORT rtcCodec UNITY_INTERFACE_API get_rtc_codec_h264()
-    {
-        return RTC_CODEC_H264;
-    }
-
-    UNITY_INTERFACE_EXPORT rtcCodec UNITY_INTERFACE_API get_rtc_codec_opus()
-    {
-        return RTC_CODEC_OPUS;
-    }
-
-    UNITY_INTERFACE_EXPORT rtcDirection UNITY_INTERFACE_API
-    get_rtc_direction_recvonly()
-    {
-        return RTC_DIRECTION_RECVONLY;
-    }
-
     UNITY_INTERFACE_EXPORT rtcReliability* UNITY_INTERFACE_API
     create_reliability()
     {

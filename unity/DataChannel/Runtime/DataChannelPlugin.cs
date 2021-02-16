@@ -29,11 +29,31 @@ public enum RtcLogLevel : int
     RTC_LOG_VERBOSE = 6
 }
 
+public enum RtcCodec : int
+{
+    // video
+    RTC_CODEC_H264 = 0,
+    RTC_CODEC_VP8 = 1,
+    RTC_CODEC_VP9 = 2,
+
+    // audio
+    RTC_CODEC_OPUS = 128
+}
+
+public enum RtcDirection : int
+{
+    RTC_DIRECTION_UNKNOWN = 0,
+    RTC_DIRECTION_SENDONLY = 1,
+    RTC_DIRECTION_RECVONLY = 2,
+    RTC_DIRECTION_SENDRECV = 3,
+    RTC_DIRECTION_INACTIVE = 4
+}
+
 public delegate void RtcLogCallbackFunc(RtcLogLevel level, [MarshalAs(UnmanagedType.LPStr)] string message);
 public delegate void RtcDescriptionCallbackFunc(int pc, [MarshalAs(UnmanagedType.LPStr)] string sdp, [MarshalAs(UnmanagedType.LPStr)] string type, IntPtr ptr);
 public delegate void RtcCandidateCallbackFunc(int pc, [MarshalAs(UnmanagedType.LPStr)] string cand, [MarshalAs(UnmanagedType.LPStr)] string mid, IntPtr ptr);
 public delegate void RtcStateChangeCallbackFunc(int pc, RtcState state, IntPtr ptr);
-public delegate void RtcGatheringStateCallbackFunc(int pc, RtcGatheringState satte, IntPtr ptr);
+public delegate void RtcGatheringStateCallbackFunc(int pc, RtcGatheringState state, IntPtr ptr);
 public delegate void RtcDataChannelCallbackFunc(int pc, int dc, IntPtr ptr);
 public delegate void RtcTrackCallbackFunc(int pc, int tr, IntPtr ptr);
 public delegate void RtcOpenCallbackFunc(int id, IntPtr ptr);
@@ -102,8 +122,8 @@ public static class DataChannelPlugin
 
     // Media
     [DllImport(DLL_NAME)]
-    public static extern int unity_rtcAddTrackEx(int pc, int codec, int payloadType, int ssrc, string _mid,
-                                                 int direction, string _name, string _msid, string _trackID);
+    public static extern int unity_rtcAddTrackEx(int pc, RtcCodec codec, int payloadType, int ssrc, string _mid,
+                                                 RtcDirection direction, string _name, string _msid, string _trackID);
 
     // DataChannel, Track, and WebSocket common API
     [DllImport(DLL_NAME)]
