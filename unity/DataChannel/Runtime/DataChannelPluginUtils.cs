@@ -20,7 +20,7 @@ namespace Rtc
 
             logCallback = null;
             PeerConnectionCallbackBridge.Cleanup();
-            DataChannelCallbackBridge.Cleanup();
+            ChannelCallbackBridge.Cleanup();
         }
 
         [MonoPInvokeCallback(typeof(RtcLogCallbackFunc))]
@@ -88,14 +88,14 @@ namespace Rtc
 
     // A static class to detour Unity not supporting providing instance methods as callbacks to native code.
     // NotSupportedException: IL2CPP does not support marshaling delegates that point to instance methods to native code.
-    public static class DataChannelCallbackBridge
+    public static class ChannelCallbackBridge
     {
-        private static Dictionary<int, DataChannel> instances;
+        private static Dictionary<int, Channel> instances;
 
-        public static void SetInstance(DataChannel instance)
+        public static void SetInstance(Channel instance)
         {
             if (instances == null)
-                instances = new Dictionary<int, DataChannel>();
+                instances = new Dictionary<int, Channel>();
 
             instances[instance.Id] = instance;
 

@@ -3,6 +3,17 @@ using System.Runtime.InteropServices;
 
 public static class DataChannelPluginEx
 {
+    // These enum getter functions are here since the enums don't have a fixed
+    // numeric value yet.
+    [DllImport(DataChannelPlugin.DLL_NAME)]
+    public static extern int get_rtc_codec_h264();
+
+    [DllImport(DataChannelPlugin.DLL_NAME)]
+    public static extern int get_rtc_codec_opus();
+
+    [DllImport(DataChannelPlugin.DLL_NAME)]
+    public static extern int get_rtc_direction_recvonly();
+
     // Reliability
     [DllImport(DataChannelPlugin.DLL_NAME)]
     public static extern IntPtr create_reliability();

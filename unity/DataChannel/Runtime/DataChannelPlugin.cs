@@ -96,6 +96,15 @@ public static class DataChannelPlugin
     [DllImport(DLL_NAME)]
     public static extern int unity_rtcDeleteDataChannel(int dc);
 
+    // Track
+    [DllImport(DLL_NAME)]
+    public static extern int unity_rtcDeleteTrack(int tr);
+
+    // Media
+    [DllImport(DLL_NAME)]
+    public static extern int unity_rtcAddDataChannelEx(int pc, int codec, int payloadType, int ssrc, string _mid,
+                                                       int direction, string _name, string _msid, string _trackID);
+
     // DataChannel, Track, and WebSocket common API
     [DllImport(DLL_NAME)]
     public static extern int unity_rtcSetOpenCallback(int id, RtcOpenCallbackFunc cb);
