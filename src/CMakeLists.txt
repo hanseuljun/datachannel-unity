@@ -1,6 +1,6 @@
 add_library(DataChannelUnity SHARED
   capi_plugin.cpp
-  data_channel_init_plugin.cpp
+  capi_plugin_ex.cpp
   IUnityInterface.h
 )
 target_include_directories(DataChannelUnity PRIVATE

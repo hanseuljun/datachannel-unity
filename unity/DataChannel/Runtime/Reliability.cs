@@ -8,32 +8,32 @@ namespace Rtc
 
         public Reliability()
         {
-            Ptr = DataChannelPlugin.create_reliability();
+            Ptr = DataChannelPluginEx.create_reliability();
         }
 
         ~Reliability()
         {
-            DataChannelPlugin.delete_reliability(Ptr);
+            DataChannelPluginEx.delete_reliability(Ptr);
         }
 
         public bool GetUnordered()
         {
-            return DataChannelPlugin.reliability_get_unordered(Ptr);
+            return DataChannelPluginEx.reliability_get_unordered(Ptr);
         }
 
         public void SetUnordered(bool unordered)
         {
-            DataChannelPlugin.reliability_set_unordered(Ptr, unordered);
+            DataChannelPluginEx.reliability_set_unordered(Ptr, unordered);
         }
 
         public bool GetUnreliable()
         {
-            return DataChannelPlugin.reliability_get_unreliable(Ptr);
+            return DataChannelPluginEx.reliability_get_unreliable(Ptr);
         }
 
         public void SetUnreliable(bool unreliable)
         {
-            DataChannelPlugin.reliability_set_unreliable(Ptr, unreliable);
+            DataChannelPluginEx.reliability_set_unreliable(Ptr, unreliable);
         }
     }
 }
