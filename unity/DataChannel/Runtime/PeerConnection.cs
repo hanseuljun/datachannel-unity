@@ -97,6 +97,16 @@ namespace Rtc
             return new DataChannel(dc);
         }
 
+        public Track AddTrackEx(int codec, int payloadType, int ssrc, string mid,
+                                int direction, string name, string msid, string trackId)
+        {
+            int tr = DataChannelPlugin.unity_rtcAddTrackEx(Id, codec, payloadType, ssrc, mid, direction, name, msid, trackId);
+            if (tr < 0)
+                throw new Exception("Error from AddTrackEx.");
+
+            return new Track(tr);
+        }
+
         public void OnLocalDescription(string sdp, string type)
         {
             LocalDescriptionCreated?.Invoke(new Description(sdp, type));

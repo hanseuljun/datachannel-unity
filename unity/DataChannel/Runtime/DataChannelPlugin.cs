@@ -102,8 +102,8 @@ public static class DataChannelPlugin
 
     // Media
     [DllImport(DLL_NAME)]
-    public static extern int unity_rtcAddDataChannelEx(int pc, int codec, int payloadType, int ssrc, string _mid,
-                                                       int direction, string _name, string _msid, string _trackID);
+    public static extern int unity_rtcAddTrackEx(int pc, int codec, int payloadType, int ssrc, string _mid,
+                                                 int direction, string _name, string _msid, string _trackID);
 
     // DataChannel, Track, and WebSocket common API
     [DllImport(DLL_NAME)]
