@@ -1,4 +1,4 @@
-param ($Config = "RelWithDebInfo")
+param ($Config = 'RelWithDebInfo')
 
 Write-Output "datachannel-unity build-plugin.ps1 - Config: $Config"
 
@@ -22,7 +22,7 @@ $UnityBinPath = "$PSScriptRoot\..\unity\bin"
 &$MsBuild('/t:DataChannelUnity', "/p:Configuration=$Config", '/p:Platform=Win32', "$CmakeBuildPath\x86-uwp\DataChannelUnity.sln")
 &$MsBuild('/t:DataChannelUnity', "/p:Configuration=$Config", '/p:Platform=ARM64', "$CmakeBuildPath\arm64-uwp\DataChannelUnity.sln")
 
-function Build-UnityPlugin($Platform, $SslSuffix = "", [Switch]$Editor = $false) {
+function Build-UnityPlugin($Platform, $SslSuffix = '', [Switch]$Editor = $false) {
     $PlatformBuildPath = "$CmakeBuildPath\$Platform\src\$Config"
     $PlatformLibDataChannelPath = "$CmakeBuildPath\$Platform\libdatachannel\$Config"
 
