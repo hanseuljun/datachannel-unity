@@ -25,5 +25,5 @@ jobs:
 
       - name: cmake-vs
         run: .\scripts\cmake-vs.ps1
-      - name: build-plugin
-        run: .\scripts\build-plugin.ps1
+      - name: build-plugins
+        run: .\scripts\build-plugins.ps1
