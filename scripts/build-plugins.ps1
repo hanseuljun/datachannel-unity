@@ -48,4 +48,5 @@ function Build-UnityPlugin($Platform, $SslSuffix = "", [Switch]$Editor = $false)
 
 Build-UnityPlugin -Platform 'x64' -SslSuffix '-x64' -Editor
 Build-UnityPlugin -Platform 'x86-uwp'
+Build-UnityPlugin -Platform 'x64' -SslSuffix '-x64'
 Build-UnityPlugin -Platform 'arm64-uwp' -SslSuffix '-arm64'
