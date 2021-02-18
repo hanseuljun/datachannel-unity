@@ -13,7 +13,15 @@ namespace Rtc
 
         ~Reliability()
         {
-            DataChannelPluginEx.delete_reliability(Ptr);
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (Ptr != IntPtr.Zero)
+                DataChannelPluginEx.delete_reliability(Ptr);
+
+            Ptr = IntPtr.Zero;
         }
 
         public bool GetUnordered()

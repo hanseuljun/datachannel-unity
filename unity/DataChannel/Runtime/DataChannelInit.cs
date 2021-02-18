@@ -2,7 +2,7 @@ using System;
 
 namespace Rtc
 {
-    public class DataChannelInit
+    public class DataChannelInit : IDisposable
     {
         public IntPtr Ptr { get; private set; }
 
@@ -13,7 +13,15 @@ namespace Rtc
 
         ~DataChannelInit()
         {
-            DataChannelPluginEx.delete_data_channel_init(Ptr);
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (Ptr != IntPtr.Zero)
+                DataChannelPluginEx.delete_data_channel_init(Ptr);
+
+            Ptr = IntPtr.Zero;
         }
 
         public Reliability GetReliability()

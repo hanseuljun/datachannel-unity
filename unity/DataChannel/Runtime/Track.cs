@@ -1,18 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Rtc
 {
     public class Track : Channel
     {
+        private bool disposed;
+
         public Track(int id) : base(id)
         {
+            disposed = false;
         }
 
         ~Track()
         {
-            DataChannelPlugin.unity_rtcDeleteTrack(Id);
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (!disposed)
+                DataChannelPlugin.unity_rtcDeleteTrack(Id);
+
+            disposed = true;
         }
     }
 }

@@ -28,25 +28,33 @@ namespace Rtc
         }
     }
 
-    public class PeerConnection
+    public class PeerConnection : IDisposable
     {
         public Action<Description> LocalDescriptionCreated { get; set; }
         public Action<Candidate> LocalCandidateCreated { get; set; }
         public Action<RtcState> StateChanged { get; set; }
         public Action<RtcGatheringState> GatheringStateChanged { get; set; }
         public int Id { get; private set; }
+        private bool disposed;
 
         public PeerConnection(string[] iceServers)
         {
+            disposed = false;
             Id = DataChannelPlugin.unity_rtcCreatePeerConnection(iceServers, iceServers.Length);
             PeerConnectionCallbackBridge.SetInstance(this);
-
-            Debug.Log("PeerConnection ID: " + Id);
         }
 
         ~PeerConnection()
         {
-            DataChannelPlugin.unity_rtcDeletePeerConnection(Id);
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (!disposed)
+                DataChannelPlugin.unity_rtcDeletePeerConnection(Id);
+
+            disposed = true;
         }
 
         public void SetLocalDescription(string type)
