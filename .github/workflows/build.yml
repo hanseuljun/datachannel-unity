@@ -14,7 +14,7 @@ jobs:
       - name: Set vcpkg's response file path used as part of cache's key.
         uses: lukka/set-shell-env@v1
         with:
-          vcpkgResponseFile: ${{ github.workspace }}\vcpkgs.txt
+          vcpkgResponseFile: ${{ github.workspace }}\scripts\vcpkgs.txt
 
       - name: Restore from cache and run vcpkg
         uses: lukka/run-vcpkg@v5

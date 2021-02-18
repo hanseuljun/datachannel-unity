@@ -1,9 +1,8 @@
-$vcpkgPath = $PSScriptRoot + "\..\vcpkg"
-$txtPath = $PSScriptRoot + "\..\vcpkgs.txt"
+$VcpkgPath = "$PSScriptRoot\..\vcpkg"
 
 # Start-Process -Wait gets stuck sometimes. Using -Passthru with "| Wait-Process" instead.
-Start-Process -Passthru -NoNewWindow -FilePath $vcpkgPath\bootstrap-vcpkg.bat | Wait-Process
+Start-Process -Passthru -NoNewWindow -FilePath $VcpkgPath\bootstrap-vcpkg.bat | Wait-Process
 
-$vcpkgs = Get-Content -Path $txtPath
-$args = ,"install --recurse" + $vcpkgs
-Start-Process -Passthru -NoNewWindow -FilePath $vcpkgPath\vcpkg.exe -ArgumentList $args | Wait-Process
+$PackageList = Get-Content -Path "$PSScriptRoot\vcpkgs.txt"
+$ArgumentList = "install --recurse $PackageList"
+Start-Process -Passthru -NoNewWindow -FilePath $VcpkgPath\vcpkg.exe -ArgumentList $ArgumentList | Wait-Process
