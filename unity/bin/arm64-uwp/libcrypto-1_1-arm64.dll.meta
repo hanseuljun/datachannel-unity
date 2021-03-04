@@ -16,12 +16,19 @@ PluginImporter:
     second:
       enabled: 0
       settings:
+        Exclude Android: 1
         Exclude Editor: 1
         Exclude Linux64: 1
         Exclude OSXUniversal: 1
         Exclude Win: 1
         Exclude Win64: 1
         Exclude WindowsStoreApps: 0
+  - first:
+      Android: Android
+    second:
+      enabled: 0
+      settings:
+        CPU: ARMv7
   - first:
       Any: 
     second:
@@ -64,7 +71,7 @@ PluginImporter:
     second:
       enabled: 1
       settings:
-        CPU: X86
+        CPU: ARM64
         DontProcess: false
         PlaceholderPath: 
         SDK: AnySDK
