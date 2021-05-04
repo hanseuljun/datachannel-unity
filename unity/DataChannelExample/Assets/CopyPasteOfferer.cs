@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Rtc;
 
@@ -22,10 +23,15 @@ public class CopyPasteOfferer : MonoBehaviour
         // for how to let libdatachannel know about the ICE servers.
         string[] iceServers = new string[] { "stun.l.google.com:19302" };
         peerConnection = new PeerConnection(iceServers);
+        //peerConnection.SetUserPointer(new IntPtr(123));
         peerConnection.LocalDescriptionCreated = OnLocalDescription;
         peerConnection.LocalCandidateCreated = OnLocalCandidate;
-        dataChannel = peerConnection.AddDataChannel("datachannelexample");
-        peerConnection.SetLocalDescription("offer");
+        peerConnection.StateChanged = OnState;
+        peerConnection.GatheringStateChanged = OnGatheringState;
+        dataChannel = peerConnection.CreateDataChannel("datachannelexample");
+        //peerConnection.SetLocalDescription("offer");
+        //print($"dataChannel.Id: {dataChannel.Id}");
+        //print($"peerConnection.GetLocalDescriptionSdp(): {peerConnection.GetLocalDescriptionSdp()}");
     }
 
     void OnApplicationQuit()
@@ -52,5 +58,15 @@ public class CopyPasteOfferer : MonoBehaviour
     private void OnLocalCandidate(Candidate candidate)
     {
         localCandidateStr += "Local Candidate(Paste this to the other peer after the local description):\n" + candidate.cand + "\n\n";
+    }
+
+    private void OnState(RtcState state)
+    {
+        print("OnState: " + state);
+    }
+
+    private void OnGatheringState(RtcGatheringState state)
+    {
+        print("OnGatheringState: " + state);
     }
 }

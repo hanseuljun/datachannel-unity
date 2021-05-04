@@ -57,6 +57,11 @@ namespace Rtc
             disposed = true;
         }
 
+        public void SetUserPointer(IntPtr ptr)
+        {
+            DataChannelPlugin.unity_rtcSetUserPointer(Id, ptr);
+        }
+
         public void SetLocalDescription(string type)
         {
             if (DataChannelPlugin.unity_rtcSetLocalDescription(Id, type) < 0)
@@ -80,8 +85,9 @@ namespace Rtc
             // Assuming 8 KB would be enough for a SDP message.
             int bufferSize = 8 * 1024;
             IntPtr buffer = Marshal.AllocHGlobal(bufferSize);
-            if (DataChannelPlugin.unity_rtcGetLocalDescription(Id, buffer, bufferSize) < 0)
-                throw new Exception("Error from unity_rtcGetLocalDescriptionSdp.");
+            int error = DataChannelPlugin.unity_rtcGetLocalDescription(Id, buffer, bufferSize);
+            if (error < 0)
+                throw new Exception($"Error from unity_rtcGetLocalDescriptionSdp. (error: {error})");
             string sdp = Marshal.PtrToStringAnsi(buffer);
             Marshal.FreeHGlobal(buffer);
             return sdp;
