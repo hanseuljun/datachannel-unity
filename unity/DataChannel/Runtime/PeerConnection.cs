@@ -87,20 +87,20 @@ namespace Rtc
             return sdp;
         }
 
-        public DataChannel AddDataChannel(string label)
+        public DataChannel CreateDataChannel(string label)
         {
-            int dc = DataChannelPlugin.unity_rtcAddDataChannel(Id, label);
+            int dc = DataChannelPlugin.unity_rtcCreateDataChannel(Id, label);
             if (dc < 0)
-                throw new Exception("Error from unity_rtcAddDataChannel.");
+                throw new Exception("Error from unity_rtcCreateDataChannel.");
 
             return new DataChannel(dc);
         }
 
-        public DataChannel AddDataChannelEx(string label, DataChannelInit init)
+        public DataChannel CreateDataChannelEx(string label, DataChannelInit init)
         {
-            int dc = DataChannelPlugin.unity_rtcAddDataChannelEx(Id, label, init.Ptr);
+            int dc = DataChannelPlugin.unity_rtcCreateDataChannelEx(Id, label, init.Ptr);
             if (dc < 0)
-                throw new Exception("Error from unity_rtcAddDataChannel.");
+                throw new Exception("Error from unity_rtcCreateDataChannelEx.");
 
             return new DataChannel(dc);
         }

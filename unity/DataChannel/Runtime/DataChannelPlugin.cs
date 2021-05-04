@@ -107,11 +107,11 @@ public static class DataChannelPlugin
 
     // DataChannel
     [DllImport(DLL_NAME)]
-    public static extern int unity_rtcAddDataChannel(int pc, string label);
+    public static extern int unity_rtcCreateDataChannel(int pc, string label);
 
     // DataChannel
     [DllImport(DLL_NAME)]
-    public static extern int unity_rtcAddDataChannelEx(int pc, string label, IntPtr init);
+    public static extern int unity_rtcCreateDataChannelEx(int pc, string label, IntPtr init);
 
     [DllImport(DLL_NAME)]
     public static extern int unity_rtcDeleteDataChannel(int dc);
